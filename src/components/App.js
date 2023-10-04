@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import { HashRouter, Routes, Route} from 'react-router-dom'
 import Countdown from 'react-countdown';
 import { ethers } from 'ethers'
 
@@ -7,8 +8,11 @@ import preview from '../preview.png';
 
 // Components
 import Navigation from './Navigation';
+import Tabs from './Tabs';
 import Data from './Data';
+import Homepage from './Homepage';
 import Mint from './Mint';
+import Mint2 from './Mint2';
 import Loading from './Loading';
 
 // ABIs: Import your contract ABIs here
@@ -67,7 +71,20 @@ function App() {
 
   return(
     <Container>
-      <Navigation account={account} />
+      <HashRouter>
+        <Navigation account={account} />
+
+        <hr />
+        
+        <Tabs />
+
+        <Routes>
+          <Route exact path="/" element={<Homepage/>} />
+          <Route path="/Mint" element={<Mint />} />
+          <Route path="/Mint2" element={<Mint2 />} />
+        </Routes>
+      </HashRouter>
+      
 
       <h1 className='my-4 text-center'>Intelligent NFT</h1>
 
