@@ -7,7 +7,7 @@ const Tabs = () => {
             <LinkContainer to="/mint">
             <Nav.Link>Mint</Nav.Link>
             </LinkContainer>
-
+            
             <LinkContainer to="/mint2">
             <Nav.Link>Mint2</Nav.Link>
             </LinkContainer>
