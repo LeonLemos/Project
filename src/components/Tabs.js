@@ -4,11 +4,11 @@ import { LinkContainer } from 'react-router-bootstrap';
 const Tabs = () => {
     return(
         <Nav variant="pills" defaultActiveKey="/" className='justify-content-center my-4'>
-            <LinkContainer to="/mint">
+            <LinkContainer to="/Mint">
             <Nav.Link>Mint</Nav.Link>
             </LinkContainer>
             
-            <LinkContainer to="/mint2">
+            <LinkContainer to="/Mint2">
             <Nav.Link>Mint2</Nav.Link>
             </LinkContainer>
         </Nav>

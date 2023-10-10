@@ -22,6 +22,8 @@ const Mint = ({ provider, inft, cost, setIsLoading }) => {
     const [totalSupply, setTotalSupply] = useState(0)
     const [balance, setBalance] = useState(0)
     const isLoading = false
+
+    
   
     const mintHandler = async (e) =>{
         e.preventDefault()
@@ -39,20 +41,7 @@ const Mint = ({ provider, inft, cost, setIsLoading }) => {
     }
 
 
-    const loadBlockchainData = async () => {
-
-    // Fetch Countdown
-    const allowMintingOn = await inft.allowMintingOn()
-    setRevealTime(allowMintingOn.toString()+'000')
-    
-    setIsLoading(false)
-    }
-
-    useEffect(() => {
-        if (isLoading) {
-      loadBlockchainData()
-        }
-    }, [isLoading]);
+   
 
 
   return(
@@ -63,28 +52,6 @@ const Mint = ({ provider, inft, cost, setIsLoading }) => {
 
         ):(
             <Form.Group>
-
-                <Row>
-                {/* Column1 leftside */} Choose1
-                <>
-<Col>
-                <div className='my-4 text-center'>
-                <Countdown date ={parseInt(revealTime)} className='h2'/>
-                </div>
-
-                <Data
-                maxSupply={maxSupply}
-                totalSupply={totalSupply}
-                cost={cost}
-                balance={balance}
-                />
-
-                
-                
-            </Col>
-</>
-
-                </Row>
 
                 <Row>
                 

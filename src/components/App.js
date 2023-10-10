@@ -11,6 +11,8 @@ import Tabs from './Tabs';
 import Data from './Data';
 import Homepage from './Homepage';
 import Mint from './Mint';
+import MintPage from './MintPage1';
+import MintPage2 from './MintPage2';
 import Mint2 from './Mint2';
 import Loading from './Loading';
 
@@ -45,8 +47,8 @@ function App() {
 
         <Routes>
           <Route exact path="/" element={<Homepage/>} />
-          <Route path="Mint" element={<Mint />} />
-          <Route path="Mint2" element={<Mint2 />} />
+          <Route path="Mint" element={<MintPage />} />
+          <Route path="Mint2" element={<MintPage2 />} />
         </Routes>
       
     </Container>

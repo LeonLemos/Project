@@ -21,7 +21,7 @@ import Mint2 from './Mint2';
 import Loading from './Loading';
 
 
-const Homepage = () => {
+const MintPage = () => {
 
     const [provider, setProvider] = useState(null)
     const [inft, setINFT] = useState(null)
@@ -74,7 +74,7 @@ const Homepage = () => {
     return(
         <div className='my-4 text-center'>
         <h1 className='my-4 text-center'>Intelligent NFT</h1>
-        <p>Which iNFT would you like to create?</p>
+        <p>Create your iNFT</p>
 
         {isLoading ? (
         <Loading />
@@ -93,30 +93,6 @@ const Homepage = () => {
   
             </Col>
             
-            {/* 1st Row Column rightside */}
-            <Col>
-              { balance > 0 ? (
-                <div className='text-center'>
-                  <img src={`https:gateway.pinata.coud/ipfs/Lorem/${balance.toString()}.png`} alt="Intelligent NFT" width='400px' height = '400px' />
-                </div>
-              ):(
-              <img src={preview} alt=""/>
-              )}
-            </Col>
-          </Row>
-
-          <Row>
-            {/* 2nd Row Column leftside */}
-            <Col>
-                <h3>1st Done</h3>  
-                <Data
-                maxSupply={maxSupply}
-                totalSupply={totalSupply}
-                cost={cost}
-                balance={balance}
-                />     
-            </Col>
-
             {/* 2nd Row Column rightside */}
             <Col>
                 <h3>2nd Done</h3>
@@ -126,7 +102,20 @@ const Homepage = () => {
                 cost={cost}
                 balance={balance}
                 />     
+
+                <Mint
+                provider={provider}
+                inft={inft}
+                cost={cost}
+                setIsLoading={setIsLoading}
+                />
             </Col>
+          </Row>
+
+          <Row>
+            
+
+            
 
           </Row>
         </>
@@ -137,4 +126,4 @@ const Homepage = () => {
         
 }
 
-export default Homepage;
+export default MintPage;
