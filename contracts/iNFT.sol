@@ -41,6 +41,7 @@ contract iNFT is ERC721Enumerable, Ownable {
         emit Mint(_mintAmount, msg.sender);
     }
 
+
     function tokenURI(uint256 _tokenId) public view virtual override returns(string memory){
         require(_exists(_tokenId),'token does not exist');
         return(string(abi.encodePacked(

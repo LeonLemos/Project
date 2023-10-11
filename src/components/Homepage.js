@@ -3,6 +3,9 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { Routes, Route, BrowserRouter} from 'react-router-dom'
 import Countdown from 'react-countdown';
 import { ethers } from 'ethers'
+import Nav from 'react-bootstrap/Nav';
+import { LinkContainer } from 'react-router-bootstrap';
+
 
 // ABIs: Import your contract ABIs here
 import iNFT_ABI from '../abis/iNFT.json'
