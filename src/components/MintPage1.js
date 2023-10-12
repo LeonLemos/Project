@@ -22,34 +22,67 @@ import Data from './Data';
 import Mint from './Mint';
 import Mint2 from './Mint2';
 import Loading from './Loading';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 const MintPage = () => {
 
   const [provider, setProvider] = useState(null)
-  const [inft, setINFT] = useState(null)
   const [isWaiting, setIsWaiting] = useState(false)
+  const [message, setMessage] = useState("")
+  const [inft, setINFT] = useState(null)
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [image, setImage] = useState(null)
-
-  const [account, setAccount] = useState(null)
-
+  const [url, setURL] = useState(null)
   const [cost, setCost] = useState(0)
+
+
   const [balance, setBalance] = useState(0)
 
+
+  const [account, setAccount] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const loadBlockchainData = async () => {
+    // Initiate provider
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    setProvider(provider)
+
+    const network = await provider.getNetwork()
+
+    const inft = new ethers.Contract(config[31337].inft.address, iNFT_ABI, provider)
+    setINFT(inft)
+    
+  }
 
   const submitHandler = async (e) =>{
     e.preventDefault()
+
+    if (name === "" || description === "") {
+      window.alert("Please provide a name and description")
+      return
+    }
+
+    setIsWaiting(true)
     
-    const imageData = createImage() //call AI API to generate a image based on description
+    //call AI API to generate a image based on description
+    const imageData = await createImage() 
+
+    //Upload image to IPFS(NFT.Storage)
+    const url = await uploadImage(imageData) 
+
+    //Mint nft
+    await mintImage(url)
+
+    setIsWaiting(false)
+    setMessage("")
 
   }
     
   const createImage = async () => {
-    console.log('generating image...')
+    setMessage('Generating image...')
 
     const URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2`
 
@@ -78,35 +111,38 @@ const MintPage = () => {
   }
 
   const uploadImage = async ( imageData) =>{
-    console.log('uploading image...')
+    setMessage('Uploading image...')
 
-    new NFTStorage({ token: })
+    //Instance to NFT.Storage
+    const nftstorage = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA1NDI4MTE2YjJlZTFDRGY4OWQwZDM2NjY0YjFmRGYzQmNkYkQ5YkMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NzA0ODUzNjM0OSwibmFtZSI6IlN0b3JlIEFpTmZ0cyJ9.1Y9W_14UCXOur1_Y4yZqzBkVxQsfen6a_JLhTO14a8M" })
+    
+    //Send request to store image
+    const { ipnft } = await nftstorage.store({
+      image: new File([imageData], "image.jpeg", { type: "image/jpeg" }),
+      name: name,
+      description: description,
+    })
+
+    // Save the URL
+    const url = `https://ipfs.io/ipfs/${ipnft}/metadata.json`
+    setURL(url)
+
+    return url
+
   }
 
+  const mintImage = async (tokenURI) =>{
+    setMessage("Waiting for mint...")
+
+    const signer = await provider.getSigner()
+    const transaction = await inft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("1", "ether") })
+    await transaction.wait()
     
-
-  const loadBlockchainData = async () => {
-  // Initiate provider
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  setProvider(provider)
-
-  const inft = new ethers.Contract(config[31337].inft.address, iNFT_ABI, provider)
-  setINFT(inft)
-
-  // Fetch accounts
-  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-  const account = ethers.utils.getAddress(accounts[0])
-  setAccount(account)
-
-  
-  setIsLoading(false)
   }
 
   useEffect(() => {
-      if (isLoading) {
     loadBlockchainData()
-      }
-  }, [isLoading]);
+  }, [])
   
 
   return(
@@ -114,36 +150,42 @@ const MintPage = () => {
       <h1 className='my-4 text-center'>Intelligent NFT</h1>
       <p>Create your iNFT</p>
 
-      {isLoading ? (
-      <Loading />
-      ) : ( 
         <>
           {/* 1st Row Column leftside */} 
           <div>
-            { balance > 0 ? (
               <div className='text-center'>
-                <img src={image} alt="Intelligent NFT" width='400px' height = '400px' />
+                {!isWaiting && image ? (
+                  <img src={image} alt="Intelligent NFT" width='400px' height = '400px' />
+                ) : isWaiting ? (
+                  <div>
+                    <Spinner animation='border'/>
+                    <p>{message}</p>
+                  </div>
+                ):(
+                  <></>
+                )}
               </div>
-            ):(
-            <img src={image} alt=""/>
-            )}
-
           </div>
           
           {/* 2nd Row Column rightside */}
           <div>
-          
-              <div className='form'>
-                <form onSubmit={submitHandler}>
-                  <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>
-                  <input type='text' placeholder='Create a description...' onChange={(e) => {setDescription(e.target.value)}}></input>
-                  <input type='submit' value='Create & Mint' ></input>
-                </form>
-              </div>
+            <div className='form'>
+              <form onSubmit={submitHandler}>
+                <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>
+                <input type='text' placeholder='Create a description...' onChange={(e) => {setDescription(e.target.value)}}></input>
+                <input type='submit' value='Create & Mint' ></input>
+              </form>
+            </div>
           </div>
-        
+          <div>
+            {!isWaiting && url && (
+              <p>
+                View&nbsp;<a href={url} target="_blank" rel="noreferrer">Metadata</a>
+              </p>
+            )}
+          </div>
         </>
-              )} 
+              
       </div>
       
   )

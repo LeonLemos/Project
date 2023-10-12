@@ -28,7 +28,7 @@ describe('Token', () => {
 
         beforeEach(async () => {
         const iNFT = await ethers.getContractFactory('iNFT')
-        inft = await iNFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)  
+        inft = await iNFT.deploy(NAME, SYMBOL, COST, /* MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI */)  
         })
     
         it('has correct name', async () => {
@@ -72,11 +72,18 @@ describe('Token', () => {
 
             beforeEach(async () => {
             const iNFT = await ethers.getContractFactory('iNFT')
-            inft = await iNFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI) 
+            inft = await iNFT.deploy(NAME, SYMBOL, COST, /* MAX_SUPPLY, ALLOW_MINTING_ON,  BASE_URI */ )  
             
-            transaction = await inft.connect(minter).mint(1,{value:COST})
+            transaction = await inft.connect(minter).mint(BASE_URI,{value:COST})
             result = await transaction.wait()
             
+            })
+
+            it('Returns URI', async () => {
+                const result = await inft.tokenURI('1')
+                expect(result).to.be.equal(BASE_URI)
+
+                console.log(result)
             })
 
             it('Updates supply', async() =>{
@@ -88,8 +95,8 @@ describe('Token', () => {
             })
 
             it('returns ipfs URI', async() =>{
-                console.log(await inft.tokenURI(1))
-                expect(await inft.tokenURI(1)).to.equal(`${BASE_URI}1.json`)
+                console.log(await inft.TokenURI(1))
+                expect(await inft.TokenURI(1)).to.equal(`${BASE_URI}1.json`)
             })
       
         })

@@ -53,16 +53,16 @@ const Homepage = () => {
     setAccount(account)
 
     // Fetch Countdown
-    const allowMintingOn = await inft.allowMintingOn()
-    setRevealTime(allowMintingOn.toString()+'000')
+    //const allowMintingOn = await inft.allowMintingOn()
+    //setRevealTime(allowMintingOn.toString()+'000')
 
-    setMaxSupply(await inft.maxSupply())
+    //setMaxSupply(await inft.maxSupply())
 
-    setTotalSupply(await inft.totalSupply())
+    //setTotalSupply(await inft.totalSupply())
 
-    setCost(await inft.cost())
+    // setCost(await inft.cost())
 
-    setBalance(await inft.balanceOf(account))
+    // setBalance(await inft.balanceOf(account))
     
     setIsLoading(false)
     }
