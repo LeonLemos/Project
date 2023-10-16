@@ -13,14 +13,7 @@ import iNFT_ABI from '../abis/iNFT.json'
 // Config: Import your network config here
 import config from '../config.json';
 
-import preview from '../preview.png';
-
 // Components
-import Navigation from './Navigation';
-import Tabs from './Tabs';
-import Data from './Data';
-import Mint from './Mint';
-import Mint2 from './Mint2';
 import Loading from './Loading';
 import Spinner from 'react-bootstrap/Spinner';
 
@@ -147,17 +140,16 @@ const MintPage = () => {
 
   return(
       <div className='my-4 text-center'>
-      <h1 className='my-4 text-center'>Intelligent NFT</h1>
-      <p>Create your iNFT</p>
+        <h1 >Intelligent NFT</h1>
+        <p>Create your iNFT</p>
 
-        <>
           {/* 1st Row Column leftside */} 
-          <div>
-              <div className='text-center'>
+          <div className='form'>
+            <div className='image' >
                 {!isWaiting && image ? (
-                  <img src={image} alt="Intelligent NFT" width='400px' height = '400px' />
+                <img src={image} alt="Intelligent NFT"  />
                 ) : isWaiting ? (
-                  <div>
+                  <div className='image__placeholder' >
                     <Spinner animation='border'/>
                     <p>{message}</p>
                   </div>
@@ -166,26 +158,27 @@ const MintPage = () => {
                 )}
               </div>
           </div>
-          
+              
           {/* 2nd Row Column rightside */}
-          <div>
-            <div className='form'>
+          
+            <div className=' text-center'>
               <form onSubmit={submitHandler}>
-                <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>
+                <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>                
                 <input type='text' placeholder='Create a description...' onChange={(e) => {setDescription(e.target.value)}}></input>
-                <input type='submit' value='Create & Mint' ></input>
+                <p>
+                <input type='submit' value='Create & Mint NFT'  ></input>
+                </p> 
               </form>
             </div>
-          </div>
-          <div>
-            {!isWaiting && url && (
-              <p>
-                View&nbsp;<a href={url} target="_blank" rel="noreferrer">Metadata</a>
-              </p>
-            )}
-          </div>
-        </>
-              
+          
+            <div>
+              {!isWaiting && url && (
+                <p>
+                  View&nbsp;<a href={url} target="_blank" rel="noreferrer">Metadata</a>
+                </p>
+              )}
+            </div>
+        
       </div>
       
   )

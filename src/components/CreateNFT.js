@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
-import { Web3Storage, File } from "web3.storage";
+import '../styles/App.css'
+import '../styles/CreateNFT.css'
+import { Web3Storage } from "web3.storage";
 import { ethers } from "ethers";
-import NFTliser_ABI from '../abis/NFTliser.json'
-import config from '../config.json';
-// import 'dotenv/config' ;
-// require('dotenv').config()
-
+import { abi } from "../components/abi";
 // import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // dotenv.config()
 
@@ -19,7 +17,7 @@ function getAccessToken() {
   // environement variable or other configuration that's kept outside of
   // your code base. For this to work, you need to set the
   // WEB3STORAGE_TOKEN environment variable before you run your code.
-   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM";
+   return process.env.REACT_APP_NFT_STORAGE_API_KEY
 }
 
 function makeStorageClient() {
@@ -27,7 +25,7 @@ function makeStorageClient() {
 }
 
 
-const MintPage2 = () => {
+const CreateNFT = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -86,27 +84,22 @@ const MintPage2 = () => {
     const accounts = await provider.send("eth_requestAccounts", []);
     console.log(accounts[0])
     const signer = provider.getSigner();
-    
-    const network = await provider.getNetwork()
-
-    const nftliser = new ethers.Contract(config[31337].nftliser.address, NFTliser_ABI, provider)
-    console.log(nftliser)
+    const contractAddress = "0xf76D167A96Fff3526918aad94e2963Bf772444ad"; // walaby testnet
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+    console.log(contract)
     // const gasPrice = await provider.getFeeData();
     // console.log(gasPrice)
-    //const gas = 1000000;//ethers.utils.formatUnits(100000000);
-    //const costFromContract = await nftliser.cost();
-    //const totalCost = costFromContract * data.units;
-    /* const transaction = {
+    const gas = 1000000;//ethers.utils.formatUnits(100000000);
+    const costFromContract = await contract.cost();
+    const totalCost = costFromContract * data.units;
+    const withSigner = contract.connect(signer);
+    const transaction = {
       from: accounts[0],
       value: ethers.utils.parseUnits(totalCost.toString(), "wei"),
       gasPrice: gas,
     };
-    const tx = await nftliser.connect(signer).mint(data.units, finalCid, transaction);
-    console.log(tx); */
-
-    const transaction = await nftliser.connect(signer).mint(finalCid, { value: ethers.utils.parseUnits("1", "ether") })
-    await transaction.wait()
-    console.log(transaction); 
+    const tx = await withSigner.mint(data.units, finalCid, transaction);
+    console.log(tx);
   }
 
 
@@ -227,4 +220,4 @@ const MintPage2 = () => {
   )
 }
 
-export default MintPage2
+export default CreateNFT

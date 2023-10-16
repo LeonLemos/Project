@@ -10,7 +10,6 @@
     "axios": "^1.5.1",
     "bootstrap": "^5.2.0",
     "buffer": "^6.0.3",
-    "dotenv": "^16.3.1",
     "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
@@ -21,7 +20,8 @@
     "react-router-bootstrap": "^0.26.2",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "web3.storage": "^4.5.5"
   },
   "scripts": {
     "start": "react-scripts start",
