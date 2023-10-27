@@ -1,24 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.16;
 
-// ████████╗███████╗██████╗ ██████╗  ██████╗ 
-// ╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔═══██╗
-//    ██║   █████╗  ██████╔╝██████╔╝██║   ██║
-//    ██║   ██╔══╝  ██╔══██╗██╔══██╗██║   ██║
-//    ██║   ███████╗██████╔╝██████╔╝╚██████╔╝
-//    ╚═╝   ╚══════╝╚═════╝ ╚═════╝  ╚═════╝ 
-                                          
-//     ************ MINTED **************
-//    FEVM Filecoin / Ethonline Hackathon
-//  ERC1155 Minting contract. tebbouk@gmail.com
-
-
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import './Counters.sol';
 
-contract NFTliser is ERC721URIStorage {
+contract NFTliser721 is ERC721URIStorage {
 
     address public owner;
     uint256 public cost;
@@ -45,8 +32,8 @@ contract NFTliser is ERC721URIStorage {
         _;
     }
 
-    function setCost(uint256 _newCost) public onlyOwner {
-        cost = _newCost;
+    function setCost(uint256 _cost) public onlyOwner {
+        cost = _cost;
     }
 
     function mint(string memory tokenURI) public payable {
@@ -78,8 +65,7 @@ contract NFTliser is ERC721URIStorage {
     function withdraw() public onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
-
-
+    
     // The following functions are overrides required by Solidity.
 
     /*  function _beforeTokenTransfer(address operator, address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)

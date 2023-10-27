@@ -7,26 +7,26 @@
 const hre = require("hardhat");
 
 async function main() {
-  const NAME = 'Intelligent NFT'
-  const SYMBOL = 'iNFT'
-  const COST = ethers.utils.parseUnits('1', 'ether')
-  // const MAX_SUPPLY = 25
-  // const NFT_MINT_DATE = (Date.now() + 60000).toString().slice(0, 10)
+  const NAME1 = 'Artificial NFT'
+  const SYMBOL1 = 'AiNFT'
+  const COST1 = ethers.utils.parseUnits('5', 'ether')
+  
   // const IPFS_METADATA_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
   const NAME2 = 'NFTliser'
   const SYMBOL2 = 'NFTlzr'
+  const COST2 = ethers.utils.parseUnits('1', 'ether')
 
-  // Deploy NFT
+  // Deploy AiNFT
   const iNFT = await hre.ethers.getContractFactory('iNFT')
-  let inft = await iNFT.deploy(NAME, SYMBOL, COST /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
+  let inft = await iNFT.deploy(NAME1, SYMBOL1, COST1 /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
 
   await inft.deployed()
   console.log(`iNFT deployed to: ${inft.address}\n`)
 
   // Deploy NFTliser
-  const NFTliser = await hre.ethers.getContractFactory('NFTliser')
-  let nftliser = await NFTliser.deploy(NAME2, SYMBOL2, COST /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
+  const NFTliser = await hre.ethers.getContractFactory('NFTliser1155')
+  let nftliser = await NFTliser.deploy( /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
 
   await nftliser.deployed()
   console.log(`NFTliser deployed to: ${nftliser.address}\n`)

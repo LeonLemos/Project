@@ -17,7 +17,7 @@ function getAccessToken() {
   // environement variable or other configuration that's kept outside of
   // your code base. For this to work, you need to set the
   // WEB3STORAGE_TOKEN environment variable before you run your code.
-   return process.env.REACT_APP_NFT_STORAGE_API_KEY
+  // return process.env.REACT_APP_NFT_STORAGE_API_KEY
 }
 
 function makeStorageClient() {

@@ -106,7 +106,7 @@ const MintPage = () => {
   const uploadImage = async ( imageData) =>{
     setMessage('Uploading image...')
 
-    //Instance to NFT.Storage
+    //Instantiate to NFT.Storage
     const nftstorage = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA1NDI4MTE2YjJlZTFDRGY4OWQwZDM2NjY0YjFmRGYzQmNkYkQ5YkMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NzA0ODUzNjM0OSwibmFtZSI6IlN0b3JlIEFpTmZ0cyJ9.1Y9W_14UCXOur1_Y4yZqzBkVxQsfen6a_JLhTO14a8M" })
     
     //Send request to store image
@@ -139,9 +139,9 @@ const MintPage = () => {
   
 
   return(
-      <div className='my-4 text-center'>
-        <h1 >Intelligent NFT</h1>
-        <p>Create your iNFT</p>
+      <div className='MintPage' >
+        <h3 className='my-4 p-4 text-center' >AiNFT</h3>
+        <p className='my-4 text-center'>Describe What You would like to create</p>
 
           {/* 1st Row Column leftside */} 
           <div className='form'>
@@ -157,17 +157,19 @@ const MintPage = () => {
                   <></>
                 )}
               </div>
+
+
+              
           </div>
               
           {/* 2nd Row Column rightside */}
           
-            <div className=' text-center'>
-              <form onSubmit={submitHandler}>
+            <div >
+              <form onSubmit={submitHandler} > 
                 <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>                
                 <input type='text' placeholder='Create a description...' onChange={(e) => {setDescription(e.target.value)}}></input>
-                <p>
                 <input type='submit' value='Create & Mint NFT'  ></input>
-                </p> 
+                 
               </form>
             </div>
           

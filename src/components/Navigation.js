@@ -1,4 +1,5 @@
 import Navbar from 'react-bootstrap/Navbar';
+import './Navigation.css';
 
 import logo from '../logo.png';
 
@@ -12,10 +13,11 @@ const Navigation = ({ account }) => {
         height="40"
         className="d-inline-block align-top mx-3"
       />
-      <Navbar.Brand href="/">iNFT</Navbar.Brand>
+      <Navbar.Brand style={{color: 'white',  }} 
+      href="/"><strong>iNFT</strong></Navbar.Brand>
       <Navbar.Collapse className="justify-content-end">
-        <Navbar.Text>
-          {account}
+        <Navbar.Text style={{color: 'white',  }}>
+          <strong> {account} </strong> 
         </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>

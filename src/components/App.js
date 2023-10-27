@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import { HashRouter, Routes, Route, BrowserRouter} from 'react-router-dom'
+import { Routes, Route, BrowserRouter} from 'react-router-dom'
 import Countdown from 'react-countdown';
 import { ethers } from 'ethers'
 
@@ -10,10 +10,8 @@ import Navigation from './Navigation';
 import Tabs from './Tabs';
 import Data from './Data';
 import Homepage from './Homepage';
-import Mint from './Mint';
 import MintPage from './MintPage1';
 import MintPage2 from './MintPage2';
-import Mint2 from './Mint2';
 import Loading from './Loading';
 
 function App() {
@@ -37,19 +35,23 @@ function App() {
     }, [isLoading]);
 
   return(
-    <Container>
+    <Container >
       
+      {account ? (
         <Navigation account={account} />
+      ):(
+        <p>Connect the Wallet Fool!</p>
+      )}
 
-        <hr />
-        
-        <Tabs />
+      <Tabs />  
 
-        <Routes>
-          <Route exact path="/" element={<Homepage/>} />
-          <Route path="Mint" element={<MintPage />} />
-          <Route path="Mint2" element={<MintPage2 />} />
-        </Routes>
+      <hr style={{color: '#151C21', backgroundColor: '#151C21',height: 10, opacity: 1 }}/>
+
+      <Routes>
+        <Route exact path="/" element={<Homepage/>} />
+        <Route path="Mint" element={<MintPage />} />
+        <Route path="Mint2" element={<MintPage2 />} />
+      </Routes>
       
     </Container>
   )

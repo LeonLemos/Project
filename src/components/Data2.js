@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-const Data = ({ cost, balance }) => {
+const Data2 = ({ account, id, cost, balance }) => {
   return(
     <div className='text-center'>
       <p><strong>Cost to Mint:</strong> {ethers.utils.formatUnits(cost, 'ether')} ETH</p>
@@ -9,4 +9,4 @@ const Data = ({ cost, balance }) => {
   )
 }
 
-export default Data;
+export default Data2;

@@ -9,9 +9,10 @@
 :root {
   --clr-white: #fbfbfb;
   --clr-black: #202020;
-  --clr-red: #9e051c;
+  --clr-red: rgb(190, 0, 0);
   --clr-purple: #600c73;
   --clr-blue:#2406a9 ;
+  
 }
 
 body {
@@ -21,6 +22,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 code {
@@ -35,6 +37,7 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #151C21;
 
   max-width: 90%;
   width: 400px;
@@ -50,17 +53,43 @@ code {
   width: 512px;
   height: 512px;
   border-radius: 6px;
+  
 }
 
 .image__placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 .image__placeholder p {
   margin: 0 10px;
   justify-content: center;
+  
+}
+
+.AiNFT-Link{
+  border: 3px solid rgb(147, 146, 146);
+  border-radius: 4px;
+  margin-bottom: 4px;
+
+}
+
+.AiNFT-Link:hover{
+  border: 3px solid rgb(192, 0, 0);
+  border-radius: 4px;
+  
+}
+
+.NFTliser-Link{
+  border: 3px solid rgb(147, 146, 146);
+  border-radius: 4px;
+}
+
+.NFTliser-Link:hover{
+  border: 3px solid rgb(192, 0, 0);
+  border-radius: 4px;
   
 }
 
@@ -73,6 +102,7 @@ code {
   align-items: center;
 
   min-height: 450px;
+  
 }
 
 
@@ -91,11 +121,40 @@ form input[type="text"] {
   font-size: 1.10em;
 }
 
+form input[type="description"] {
+  background-color: var(--clr-white);
+  color :#9e051c;
+  width: 250px;
+  height: 50px;
+  margin: 10px 2px;
+  padding: 10px;
+  font-size: 18px;
+
+  border: 2.5px solid var(--clr-red);
+  border-radius: 4px;
+
+  font-size: 1.10em;
+}
+
+form input[type="number"] {
+  background-color: var(--clr-white);
+  color :#9e051c;
+  width: 250px;
+  height: 50px;
+  margin: 10px 2px;
+  padding: 10px;
+  font-size: 18px;
+
+  border: 2.5px solid var(--clr-red);
+  border-radius: 4px;
+
+  font-size: 1.10em;
+}
+
 
 form input[type="submit"] {
   background-color: var(--clr-red);
   color: var(--clr-white);
-  
 
   width: 250px;
   height: 50px;
@@ -116,3 +175,112 @@ form input[type="submit"] {
 form input[type="submit"]:hover {
   background-color: var(--clr-black);
 }
+
+/* MintPage 1 ---------------------------------------------------------------------------------------     */
+.MintPage{
+  position: relative;
+  margin-top: 50px;
+  font-size: 20px;
+  background-color: lightgray;
+  margin-top: 0px;
+  color: #000000;
+  border: 3px solid var(--clr-red);
+  border-radius: 4px;
+
+} 
+
+/* MintPage 2 ---------------------------------------------------------------------------------------     */
+.create-container{
+  position: relative;
+  margin-top: 50px;
+  font-size: 20px;
+  background-color: #151C21;
+  margin-top: 0px;
+  color: white;
+  border: 3px solid var(--clr-red);
+  border-radius: 4px;
+  
+} 
+
+.containerMain{
+  background-color: #151C21;
+  margin-top: 0px;
+} 
+
+.submit{
+  margin-top: 30px;
+}
+
+#BtnColor{
+  background-color: rgb(190, 0, 0);
+  color: white;
+  border:none;
+  height: 50px;
+  width: 100px;
+  border-radius: 5px;
+  font-weight: 700;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.containerMain{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  
+}
+
+.h3{
+  color: rgb(190, 0, 0);
+}
+
+.left{
+  width: 50%;
+  height: 800px;
+  /* background-color: aqua; */
+  /* display: flex;
+  flex-direction: column; */
+}
+
+input{
+  margin-top: 28px;
+  
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  width:256px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 40px;
+
+}
+
+.right{
+  width: 50%;
+  height: 800px;
+  /* background-color:red; */
+}
+
+.title{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.flip-card{
+  margin-right: 200px;
+}
+
+.description{
+  display: block;
+  text-align: center;
+  width:400px;
+  font-size: 16px;
+  /* height: 200px;
+  margin-bottom: 10px; */
+  margin-left:auto;
+  margin-right: auto;
+}
+

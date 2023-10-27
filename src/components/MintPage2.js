@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { Web3Storage, File } from "web3.storage";
 import { ethers } from "ethers";
-import NFTliser_ABI from '../abis/NFTliser.json'
-import config from '../config.json';
+
 // import 'dotenv/config' ;
 // require('dotenv').config()
 
 // import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 // dotenv.config()
+
+// ABIs: Import your contract ABIs here
+import NFTliser_ABI from '../abis/NFTliser.json'
+
+// Config: Import your network config here
+import config from '../config.json';
 
 //web3storage get token
 function getAccessToken() {
@@ -93,20 +98,20 @@ const MintPage2 = () => {
     console.log(nftliser)
     // const gasPrice = await provider.getFeeData();
     // console.log(gasPrice)
-    //const gas = 1000000;//ethers.utils.formatUnits(100000000);
-    //const costFromContract = await nftliser.cost();
-    //const totalCost = costFromContract * data.units;
-    /* const transaction = {
+    // const gas = 1000000;//ethers.utils.formatUnits(100000000);
+    const cost = await nftliser.cost();
+    const totalCost = cost * data.units;
+     const transaction = {
       from: accounts[0],
       value: ethers.utils.parseUnits(totalCost.toString(), "wei"),
-      gasPrice: gas,
+      /*gasPrice: gas, */
     };
     const tx = await nftliser.connect(signer).mint(data.units, finalCid, transaction);
-    console.log(tx); */
+    console.log(tx); 
 
-    const transaction = await nftliser.connect(signer).mint(finalCid, { value: ethers.utils.parseUnits("1", "ether") })
-    await transaction.wait()
-    console.log(transaction); 
+    //const transaction = await nftliser.connect(signer).mint(finalCid, { value: ethers.utils.parseUnits(totalCost.toString(), "wei") })
+    //await transaction.wait()
+    //console.log(transaction); 
   }
 
 
@@ -117,19 +122,20 @@ const MintPage2 = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if(selectedImage === null){
-    //   console.log("no data")
-    // }
+     if(selectedImage === null){
+      window.alert("Please provide a File")
+      return
+    }
     console.log("data created ", data);
     console.log("media", selectedMedia);
   };
   return (
     <div className='create-container'>
-      <h3>0.3 tFILL to Mint per item</h3>
+      <h3 className='my-4 p-4 text-center'>NFTliser</h3>
+      <p className="title text-center">Upload the file you want to NFTlise ?</p>
         <div className="containerMain">
         <div className="left">
-          <p className="title">Create your NFTs</p>
-
+          
           <form onSubmit={handleSubmit}>
             <input
               type="text"
