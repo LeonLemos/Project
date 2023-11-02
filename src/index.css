@@ -30,6 +30,15 @@ code {
     monospace;
 }
 
+/* Alert ---------------------------------------------------------------------------------------     */
+.alert {
+  max-width: 300px;
+  position: absolute;
+  bottom: 100px;
+  right: 100px;
+  padding: 50px;
+}
+
 /* ------------------------------------------------------ */
 /* -- IMAGE -- */
 
@@ -56,6 +65,11 @@ code {
   
 }
 
+  
+.spinner-border{
+  color :#9e051c;
+}
+
 .image__placeholder {
   display: flex;
   justify-content: center;
@@ -66,6 +80,7 @@ code {
 .image__placeholder p {
   margin: 0 10px;
   justify-content: center;
+  color: #fbfbfb;
   
 }
 

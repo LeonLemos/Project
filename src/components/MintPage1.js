@@ -6,6 +6,10 @@ import Countdown from 'react-countdown';
 import { ethers } from 'ethers'
 import { Buffer } from 'buffer';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { mint } from '../store/interactions';
+import Alert from './Alert';
 
 // ABIs: Import your contract ABIs here
 import iNFT_ABI from '../abis/iNFT.json'
@@ -20,36 +24,25 @@ import Spinner from 'react-bootstrap/Spinner';
 
 const MintPage = () => {
 
-  const [provider, setProvider] = useState(null)
   const [isWaiting, setIsWaiting] = useState(false)
   const [message, setMessage] = useState("")
-  const [inft, setINFT] = useState(null)
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [image, setImage] = useState(null)
   const [url, setURL] = useState(null)
-  const [cost, setCost] = useState(0)
 
-
-  const [balance, setBalance] = useState(0)
-
-
-  const [account, setAccount] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const loadBlockchainData = async () => {
-    // Initiate provider
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(provider)
+  // Initiate provider
+  const provider = useSelector(state=>state.provider.connection)
+  const account = useSelector(state=>state.provider.account)
 
-    const network = await provider.getNetwork()
+  const inft = useSelector(state=>state.inft.contract)
+  const inftCost = useSelector(state=>state.inft.cost)
 
-    const inft = new ethers.Contract(config[31337].inft.address, iNFT_ABI, provider)
-    setINFT(inft)
-    
-  }
-
+  const dispatch = useDispatch()
+  
   const submitHandler = async (e) =>{
     e.preventDefault()
 
@@ -127,15 +120,10 @@ const MintPage = () => {
   const mintImage = async (tokenURI) =>{
     setMessage("Waiting for mint...")
 
-    const signer = await provider.getSigner()
-    const transaction = await inft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("1", "ether") })
-    await transaction.wait()
+    await mint(provider, inft, tokenURI, dispatch)
     
   }
 
-  useEffect(() => {
-    loadBlockchainData()
-  }, [])
   
 
   return(

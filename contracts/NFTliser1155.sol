@@ -7,13 +7,11 @@ import './Counters.sol';
 
 contract NFTliser1155 is ERC1155Supply {
 
-
     address public owner;
     uint256 public cost = 1 ether;
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
     mapping (uint256 => string) private _tokenURIs;
-
 
     constructor() ERC1155(""){ }
 

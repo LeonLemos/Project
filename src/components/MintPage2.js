@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { Web3Storage, File } from "web3.storage";
 import { ethers } from "ethers";
 
+import { useDispatch, useSelector } from 'react-redux';
+import { loadNFTliserBalance, loadNFTliserCid } from '../store/interactions';
+
 // import 'dotenv/config' ;
 // require('dotenv').config()
 
@@ -13,6 +16,9 @@ import NFTliser_ABI from '../abis/NFTliser.json'
 
 // Config: Import your network config here
 import config from '../config.json';
+import { mint2 } from '../store/interactions';
+import Alert from './Alert';
+
 
 //web3storage get token
 function getAccessToken() {
@@ -31,13 +37,22 @@ function makeStorageClient() {
   return new Web3Storage({ token: getAccessToken() });
 }
 
-
 const MintPage2 = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
+  //const [nftliserBalance, setNFTLISERBalance] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [finalCid, setFinalCid] = useState(null);
+  
   const [flip, setFlip] = useState(false);
+  const [id, setId] = useState(0)
+
+  const provider = useSelector(state=>state.provider.connection)
+  const nftliser = useSelector(state=>state.nftliser.contract)
+  const account = useSelector(state=>state.provider.account)
+
+   
+  const dispatch = useDispatch()
 
   const [data, setData] = useState({ name: "", description: "", units: "" });
 
@@ -57,7 +72,9 @@ const MintPage2 = () => {
     const client = makeStorageClient();
     const cid = await client.put(files);
     console.log("step two");
-    console.log("stored files with cid:", cid);
+    console.log("stored files with cid:", cid); 
+
+    //const cid = await loadNFTliserCid(dispatch, selectedImage, selectedMedia)
 
     var obj = new Object();
     obj.name = data.name;
@@ -80,41 +97,34 @@ const MintPage2 = () => {
     const cid2 = await client2.put(ipfsfiles);
     setFinalCid("ipfs://" + cid2 + "/json");
     console.log("finalCid = ", finalCid);
-  }
+
+    setId(cid)
+    console.log("new Id is",id);
+
+  } 
 
   async function mint() {
     makeFileObjects();
     // const provider = new ethers.providers.JsonRpcProvider(
     //   "https://hidden-morning-seed.matic-testnet.discover.quiknode.pro/020a375541e8da3b2e4e95138cf72daee91ed6e2/"
     // );
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const accounts = await provider.send("eth_requestAccounts", []);
-    console.log(accounts[0])
-    const signer = provider.getSigner();
+
+    //const provider = new ethers.providers.Web3Provider(window.ethereum);
+    //const accounts = await provider.send("eth_requestAccounts", []);
+    //const account = ethers.utils.getAddress(accounts[0])
+
+    //console.log(accounts[0])
+    //const signer = provider.getSigner();
     
-    const network = await provider.getNetwork()
+    //const network = await provider.getNetwork()
 
-    const nftliser = new ethers.Contract(config[31337].nftliser.address, NFTliser_ABI, provider)
+    //const nftliser = new ethers.Contract(config[31337].nftliser.address, NFTliser_ABI, provider)
+    
     console.log(nftliser)
-    // const gasPrice = await provider.getFeeData();
-    // console.log(gasPrice)
-    // const gas = 1000000;//ethers.utils.formatUnits(100000000);
-    const cost = await nftliser.cost();
-    const totalCost = cost * data.units;
-     const transaction = {
-      from: accounts[0],
-      value: ethers.utils.parseUnits(totalCost.toString(), "wei"),
-      /*gasPrice: gas, */
-    };
-    const tx = await nftliser.connect(signer).mint(data.units, finalCid, transaction);
-    console.log(tx); 
 
-    //const transaction = await nftliser.connect(signer).mint(finalCid, { value: ethers.utils.parseUnits(totalCost.toString(), "wei") })
-    //await transaction.wait()
-    //console.log(transaction); 
+    
+    await mint2 (provider,data, nftliser, finalCid, dispatch)
   }
-
-
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -129,6 +139,10 @@ const MintPage2 = () => {
     console.log("data created ", data);
     console.log("media", selectedMedia);
   };
+
+  const nftliserBalance = useSelector(state=>state.nftliser.balance)
+  //const nftliserBalance = nftliser.balanceOf(account, cid)
+
   return (
     <div className='create-container'>
       <h3 className='my-4 p-4 text-center'>NFTliser</h3>
@@ -186,6 +200,8 @@ const MintPage2 = () => {
             >
               Submit
             </button>
+            <h3 className='my-3'>NFTliser</h3>
+              <p><strong>You own : </strong>{nftliserBalance}</p>      
           </form>
         </div>
 
@@ -233,4 +249,6 @@ const MintPage2 = () => {
   )
 }
 
-export default MintPage2
+export default MintPage2;
+
+
