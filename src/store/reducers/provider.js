@@ -17,10 +17,9 @@ export const provider = createSlice ({
         setAccount: (state,action)=>{
             state.account = action.payload
         }
-        
     }
 })
 
-export const { setProvider, setNetwork, setAccount  } = provider.actions;
+export const { setProvider, setNetwork, setAccount } = provider.actions;
 
 export default provider.reducer;

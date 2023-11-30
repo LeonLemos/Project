@@ -2,25 +2,28 @@
 pragma solidity ^0.8.16;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+//import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import './Counters.sol';
 
-contract NFTliser1155 is ERC1155Supply {
+contract NFTliser1155 is ERC1155 {
 
     address public owner;
     uint256 public cost = 1 ether;
+    //uint256 public tokenId;
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
     mapping (uint256 => string) private _tokenURIs;
 
-    constructor() ERC1155(""){ }
+    mapping(uint256 tokenId => uint256) private _totalSupply;
+    uint256 private _totalSupplyAll;
 
+    constructor() ERC1155(""){ }
+    
 
     function uri(uint256 tokenId) override public view returns (string memory){
         return(_tokenURIs[tokenId]);
     }
-
-
+    
     function _ownerOf(uint256 tokenId) internal view returns (bool) {
         return balanceOf(msg.sender, tokenId) != 0;
     }
@@ -50,9 +53,24 @@ contract NFTliser1155 is ERC1155Supply {
         _mintBatch(to, ids, amounts, data);
     }
 
+    function totalSupply() public view returns (uint256) {
+        return _tokenIds.current();
+    }
+
+    function totaltokenSupply(uint256 tokenId) public view returns (uint256) {
+        return _totalSupply[tokenId];
+    }
+    
+    function exists(uint256 tokenId) public view returns (bool) {
+        return totaltokenSupply(tokenId) > 0;
+    }
+
     function withdraw() public onlyOwner {
         payable(msg.sender).transfer(address(this).balance);
     }
+
+
+
     
     // The following functions are overrides required by Solidity.
     /*

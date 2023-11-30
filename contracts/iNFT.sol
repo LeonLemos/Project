@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 import './Counters.sol';
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
@@ -47,16 +46,6 @@ contract iNFT is ERC721URIStorage {
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
     }
-    
-
-   /* function walletOfOwner(address _owner) public view returns (uint256[] memory){
-        uint256 ownerTokenCount = balanceOf(_owner);
-        uint256[] memory tokenIds = new uint256[](ownerTokenCount);
-        for(uint256 i; i < ownerTokenCount; i++){
-            tokenIds[i] = tokenOfOwnerByIndex(_owner,i);
-        }
-        return tokenIds;
-    } */
 
     function totalSupply() public view returns (uint256) {
         return _tokenIds.current();

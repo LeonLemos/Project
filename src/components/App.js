@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap'
 import { Routes, Route, BrowserRouter} from 'react-router-dom'
-import { ethers } from 'ethers'
+import { Web3Storage, File } from "web3.storage";
 
 // ABIs: Import your contract ABIs here
 import iNFT_ABI from '../abis/iNFT.json'
@@ -19,15 +19,12 @@ import Loading from './Loading';
 
 import { loadProvider, loadNetwork, loadAccount } from '../store/interactions';
 import { loadINFT, loadNFTliser  } from '../store/interactions';
-import {loadInftBalance,loadInftCost, loadNFTliserBalance, loadNFTliserCost, loadNFTliserCid} from '../store/interactions';
+import { loadInftBalance,loadInftCost, loadNFTliserBalance, loadNFTliserCost, updateInftSupply, updateNFTliserSupply} from '../store/interactions';
 
 
 function App() {
 
   const dispatch = useDispatch()
-
-  //const {cid} = require('./MintPage2.js');
-
 
   const loadBlockchainData = async () => {
 
@@ -54,22 +51,19 @@ function App() {
     const inft = await loadINFT(provider, chainId, dispatch)
     const nftliser = await loadNFTliser(provider, chainId, dispatch)
 
-    // Fetch CID
-    //const id = await loadNFTliserCid(dispatch)
-
     // Fetch Balance
     const inftBalance = await loadInftBalance(inft, account, dispatch)
-    //const nftliserBalance = await loadNFTliserBalance (nftliser, account, id, dispatch)
+    const nftliserBalance = await loadNFTliserBalance (nftliser, account, dispatch)
                       
-    //const nftliserBalance = await nftliser.balanceOf(account, id)
-    //setNFTLISERBalance(nftliserBalance)
-
     // Fetch Cost
     const inftCost = await loadInftCost(inft, dispatch)
     const nftliserCost = await loadNFTliserCost(nftliser, dispatch)
-  }
 
-  
+    // Fetch Count
+    const inftSupply = await updateInftSupply(inft,dispatch)
+    const nftliserSupply = await updateNFTliserSupply(nftliser,dispatch)
+
+  }
 
   useEffect(() => {
     loadBlockchainData()

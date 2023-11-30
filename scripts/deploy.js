@@ -25,8 +25,8 @@ async function main() {
   console.log(`iNFT deployed to: ${inft.address}\n`)
 
   // Deploy NFTliser
-  const NFTliser = await hre.ethers.getContractFactory('NFTliser1155')
-  let nftliser = await NFTliser.deploy( /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
+  const NFTliser = await hre.ethers.getContractFactory('NFTliser721')
+  let nftliser = await NFTliser.deploy(NAME2, SYMBOL2, COST2 /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
 
   await nftliser.deployed()
   console.log(`NFTliser deployed to: ${nftliser.address}\n`)

@@ -19,7 +19,6 @@ import config from '../config.json';
 import { mint2 } from '../store/interactions';
 import Alert from './Alert';
 
-
 //web3storage get token
 function getAccessToken() {
   // If you're just testing, you can paste in a token
@@ -40,21 +39,17 @@ function makeStorageClient() {
 const MintPage2 = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
-  //const [nftliserBalance, setNFTLISERBalance] = useState(0)
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [finalCid, setFinalCid] = useState(null);
   
   const [flip, setFlip] = useState(false);
-  const [id, setId] = useState(0)
 
   const provider = useSelector(state=>state.provider.connection)
   const nftliser = useSelector(state=>state.nftliser.contract)
-  const account = useSelector(state=>state.provider.account)
 
-   
   const dispatch = useDispatch()
 
-  const [data, setData] = useState({ name: "", description: "", units: "" });
+  const [data, setData] = useState({ name: "", description: "" });
 
   async function makeFileObjects() {
     // You can create File objects from a Blob of binary data
@@ -73,8 +68,6 @@ const MintPage2 = () => {
     const cid = await client.put(files);
     console.log("step two");
     console.log("stored files with cid:", cid); 
-
-    //const cid = await loadNFTliserCid(dispatch, selectedImage, selectedMedia)
 
     var obj = new Object();
     obj.name = data.name;
@@ -97,33 +90,13 @@ const MintPage2 = () => {
     const cid2 = await client2.put(ipfsfiles);
     setFinalCid("ipfs://" + cid2 + "/json");
     console.log("finalCid = ", finalCid);
-
-    setId(cid)
-    console.log("new Id is",id);
-
   } 
 
   async function mint() {
     makeFileObjects();
-    // const provider = new ethers.providers.JsonRpcProvider(
-    //   "https://hidden-morning-seed.matic-testnet.discover.quiknode.pro/020a375541e8da3b2e4e95138cf72daee91ed6e2/"
-    // );
-
-    //const provider = new ethers.providers.Web3Provider(window.ethereum);
-    //const accounts = await provider.send("eth_requestAccounts", []);
-    //const account = ethers.utils.getAddress(accounts[0])
-
-    //console.log(accounts[0])
-    //const signer = provider.getSigner();
-    
-    //const network = await provider.getNetwork()
-
-    //const nftliser = new ethers.Contract(config[31337].nftliser.address, NFTliser_ABI, provider)
     
     console.log(nftliser)
-
-    
-    await mint2 (provider,data, nftliser, finalCid, dispatch)
+    await mint2 (provider, nftliser, finalCid, dispatch)
   }
 
   const handleChange = (e) => {
@@ -140,8 +113,6 @@ const MintPage2 = () => {
     console.log("media", selectedMedia);
   };
 
-  const nftliserBalance = useSelector(state=>state.nftliser.balance)
-  //const nftliserBalance = nftliser.balanceOf(account, cid)
 
   return (
     <div className='create-container'>
@@ -161,12 +132,6 @@ const MintPage2 = () => {
               type="description"
               placeholder="NFT Description"
               name="description"
-              onChange={handleChange}
-            />
-            <input
-              type="number"
-              placeholder="Number of NFTs to Mint"
-              name="units"
               onChange={handleChange}
             />
             <p>Display image</p>
@@ -200,8 +165,8 @@ const MintPage2 = () => {
             >
               Submit
             </button>
-            <h3 className='my-3'>NFTliser</h3>
-              <p><strong>You own : </strong>{nftliserBalance}</p>      
+            
+                
           </form>
         </div>
 
@@ -216,7 +181,7 @@ const MintPage2 = () => {
                   <div className="front">
                     <p className="title">{data.name}</p>
                     <p className='description'>{data.description}</p>
-                    <p>{data.units} x NFTs</p>
+                    
                     <img
                       alt="not found"
                       width={"180px"}

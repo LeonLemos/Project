@@ -36,7 +36,7 @@ contract NFTliser721 is ERC721URIStorage {
         cost = _cost;
     }
 
-    function mint(string memory tokenURI) public payable {
+   function mint(string memory tokenURI) public payable {
         require(msg.value >= cost);
 
         _tokenIds.increment();
@@ -45,6 +45,11 @@ contract NFTliser721 is ERC721URIStorage {
         _mint(msg.sender, newItemId);
         _setTokenURI(newItemId, tokenURI);
     }
+    
+
+    function totalSupply() public view returns (uint256) {
+        return _tokenIds.current();
+    } 
 
    /* function mint(uint256 amount, string memory setUri) payable virtual public {
         require(msg.value >= (amount * cost), "Not enough ether sent");
@@ -52,15 +57,15 @@ contract NFTliser721 is ERC721URIStorage {
         _mint(msg.sender, tokenId, amount, "");
         _tokenIdCounter.increment();
         _uris[tokenId] = setUri;
-    }
+    } */
 
-
-    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
+    /*function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
         public
         onlyOwner
     {
         _mintBatch(to, ids, amounts, data);
-    }  */
+    }  
+    */
 
     function withdraw() public onlyOwner {
         payable(msg.sender).transfer(address(this).balance);

@@ -32,14 +32,12 @@ const MintPage = () => {
   const [image, setImage] = useState(null)
   const [url, setURL] = useState(null)
 
-  const [isLoading, setIsLoading] = useState(true)
-
   // Initiate provider
   const provider = useSelector(state=>state.provider.connection)
-  const account = useSelector(state=>state.provider.account)
 
   const inft = useSelector(state=>state.inft.contract)
-  const inftCost = useSelector(state=>state.inft.cost)
+
+  const count = useSelector( state=> state.inft.mintCount)
 
   const dispatch = useDispatch()
   
@@ -114,17 +112,14 @@ const MintPage = () => {
     setURL(url)
 
     return url
-
   }
 
   const mintImage = async (tokenURI) =>{
-    setMessage("Waiting for mint...")
-
-    await mint(provider, inft, tokenURI, dispatch)
     
-  }
+    setMessage("Waiting for mint...")
+    await mint(provider, inft, tokenURI, dispatch)
 
-  
+  }
 
   return(
       <div className='MintPage' >
@@ -144,20 +139,15 @@ const MintPage = () => {
                 ):(
                   <></>
                 )}
-              </div>
-
-
-              
+            </div>  
           </div>
               
           {/* 2nd Row Column rightside */}
-          
             <div >
               <form onSubmit={submitHandler} > 
                 <input type='text' placeholder='Create a name...' onChange={(e) => {setName(e.target.value)}}></input>                
                 <input type='text' placeholder='Create a description...' onChange={(e) => {setDescription(e.target.value)}}></input>
                 <input type='submit' value='Create & Mint NFT'  ></input>
-                 
               </form>
             </div>
           

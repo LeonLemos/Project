@@ -6,6 +6,7 @@ export const inft = createSlice ({
         contract:null,
         balance:0,
         cost:0,
+        supply:0,
         minting:{
             isMinting:false,
             isSuccess:false,
@@ -21,6 +22,9 @@ export const inft = createSlice ({
         },
         inftCostLoaded:(state,action)=>{
             state.cost = action.payload
+        },
+        inftSupplyUpdated:(state,action)=>{
+            state.supply = action.payload
         },
         mintRequest:(state, action)=>{
             state.minting.isMinting = true
@@ -41,6 +45,6 @@ export const inft = createSlice ({
     }
 })
 
-export const { setInftContract, inftBalanceLoaded, inftCostLoaded, mintRequest, mintSuccess, mintFail } = inft.actions;
+export const { setInftContract, inftBalanceLoaded, inftCostLoaded, inftSupplyUpdated, mintRequest, mintSuccess, mintFail } = inft.actions;
 
 export default inft.reducer;
