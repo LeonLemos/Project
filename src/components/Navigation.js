@@ -3,20 +3,31 @@ import './Navigation.css';
 import { useSelector, useDispatch } from 'react-redux';
 import Blockies from 'react-blockies';
 import Button from 'react-bootstrap/Button';
-import { loadAccount, loadInftBalance } from '../store/interactions';
+import { loadAccount, loadInftBalance, loadNFTliserBalance } from '../store/interactions';
 import Form  from 'react-bootstrap/Form';
 
 import logo from '../logo.png';
+
 // Config: Import your network config here
 import config from '../config.json';
 
 const Navigation = () => {
   const chainId = useSelector(state=>state.provider.chainId)
   const account = useSelector(state=>state.provider.account)
+  const inft = useSelector(state=>state.inft.contract)
+  const nftliser = useSelector(state=>state.nftliser.contract)
+
   const dispatch = useDispatch()
 
   const connectHandler = async () =>{
-    const account = await loadAccount(dispatch)
+    //Fetch account
+    const account = window.ethereum.on('accountsChanged', async()=>{
+      await loadAccount(dispatch)
+    })
+    
+    // Fetch Balances
+    await loadInftBalance(inft, account, dispatch)
+    await loadNFTliserBalance (nftliser, account, dispatch)
   }
 
   const networkHandler = async (e) => {
@@ -27,7 +38,7 @@ const Navigation = () => {
   }
 
   return (
-    <Navbar className='my-3'>
+    <Navbar className='my-3' >
       <img
         alt="logo"
         src={logo}
@@ -40,25 +51,29 @@ const Navigation = () => {
       <Navbar.Toggle aria-controls='nav' />
       <Navbar.Collapse id='nav'className="justify-content-end">
 
-        <div className='d-flex justify-content-end '>
+        <div className='d-flex justify-content-end mt-3'>
           <Form.Select
           aria-label="Network Selector"
-          value={config[chainId] ? `0x${chainId.toString(16)}` : `0`}
+          value={config[chainId] ? `0x${chainId.toString(16)}`:`0`}
           onChange={networkHandler}
-          style={{ maxWidth: '200px', marginRight: '20px' }}
+          style={{ maxWidth: '200px', marginRight: '20px', marginBottom:'14px' }}
         >
           <option value="0" disabled>Select Network</option>
           <option value="0x7A69">Localhost</option>
           <option value="0x5">Goerli</option>
+          <option value="0x5">Sepolia</option>
           </Form.Select>
           
           { account ? (
             <Navbar.Text className='d-flex align-items-center'style={{color: 'white'  }}>
-              <strong> {account.slice(0,5)+'...'+account.slice(38,42)} </strong> 
+              <strong> {account.slice(0,5)+'...'+ account.slice(38,42)} </strong> 
               <Blockies seed={account} size={10} scale={3} color='#2187D0' bgColor='#F1F2F9' spotColor='#767F92' className='identicon mx-2'/>
             </Navbar.Text>
           ) : (
-            <Button onClick={connectHandler}>Connect</Button>
+            <Button  type="button" onClick={connectHandler} style={{ maxWidth: '200px', marginRight: '20px', marginBottom:'14px' }}>Connect</Button>
+            
+            
+            
           )}
 
         </div>

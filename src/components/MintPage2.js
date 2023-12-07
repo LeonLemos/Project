@@ -1,46 +1,43 @@
 import React, { useState } from 'react'
-import { Web3Storage, File } from "web3.storage";
-import { ethers } from "ethers";
-
-import { useDispatch, useSelector } from 'react-redux';
-import { loadNFTliserBalance, loadNFTliserCid } from '../store/interactions';
-
-// import 'dotenv/config' ;
-// require('dotenv').config()
-
-// import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-// dotenv.config()
-
-// ABIs: Import your contract ABIs here
-import NFTliser_ABI from '../abis/NFTliser.json'
-
-// Config: Import your network config here
-import config from '../config.json';
+import { Web3Storage } from "web3.storage";
 import { mint2 } from '../store/interactions';
 import Alert from './Alert';
 
+import { useDispatch, useSelector } from 'react-redux';
+
+//import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+//dotenv.config()
+// import 'dotenv/config' ;
+
+require('dotenv').config()
+
+
 //web3storage get token
+ 
 function getAccessToken() {
   // If you're just testing, you can paste in a token
   // and uncomment the following line:
-  // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDhkZjE2REMzNzkzMjJiRUQxM2EzQjM4M0ZGRUViMTYwOUU1OUE5NzQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Njc5NDIzNjMzMTAsIm5hbWUiOiJNaW50ZWR0ZXN0In0.JDYGKZoWGLHC3M0BYq9Hj9pH5IQWOoHgH77t_yjYRmY";
+   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM";
 
   // In a real app, it's better to read an access token from an
   // environement variable or other configuration that's kept outside of
   // your code base. For this to work, you need to set the
   // WEB3STORAGE_TOKEN environment variable before you run your code.
-   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM";
+  //return process.env.WEB3STORAGE_TOKEN
 }
 
+
 function makeStorageClient() {
-  return new Web3Storage({ token: getAccessToken() });
+  return new Web3Storage({ token: getAccessToken() })
 }
+
 
 const MintPage2 = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [finalCid, setFinalCid] = useState(null);
+  const [isWaiting, setIsWaiting]= useState(true)
   
   const [flip, setFlip] = useState(false);
 
@@ -105,19 +102,21 @@ const MintPage2 = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     if(selectedImage === null){
+
+    if(selectedImage === null){
       window.alert("Please provide a File")
       return
     }
     console.log("data created ", data);
     console.log("media", selectedMedia);
+
   };
 
 
   return (
     <div className='create-container'>
       <h3 className='my-4 p-4 text-center'>NFTliser</h3>
-      <p className="title text-center">Upload the file you want to NFTlise ?</p>
+      <p className="text-center">Upload the file you want to NFTlise !</p>
         <div className="containerMain">
         <div className="left">
           
@@ -134,7 +133,7 @@ const MintPage2 = () => {
               name="description"
               onChange={handleChange}
             />
-            <p>Display image</p>
+            <p>Image File</p>
             <input
               type="file"
               id="imageFile"
@@ -161,16 +160,31 @@ const MintPage2 = () => {
               onClick={() => {
                 setFlip(true);
                 makeFileObjects();
+                setIsWaiting(false);
               }}
             >
               Submit
-            </button>
+            </button>  
             
-                
           </form>
         </div>
 
         <div className="right">
+        {isWaiting ? (
+          <div className=" text-center">
+          <p> We invite you to use our state-of-the-art <strong> NFTliser </strong>!</p>
+          <p> Simply upload any Image or Media file,
+          <p></p> and watch the magic happen as it turns into a mintable NFT!</p>
+          <p>Don't forget to name and describe your masterpiece. </p>
+          <p>Have Fun! </p>
+
+          </div>
+          
+          
+
+        
+          
+        ):(
           <div className="flip-card">
             <div className="flip-card-inner">
               <div className="flip-card-front">
@@ -208,12 +222,13 @@ const MintPage2 = () => {
               </div>
             </div>
           </div>
+        )}
         </div>
       </div>
     </div>
   )
 }
 
-export default MintPage2;
+export default MintPage2
 
 

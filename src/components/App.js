@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col } from 'react-bootstrap'
 import { Routes, Route, BrowserRouter} from 'react-router-dom'
-import { Web3Storage, File } from "web3.storage";
 
 // ABIs: Import your contract ABIs here
 import iNFT_ABI from '../abis/iNFT.json'
@@ -11,15 +10,14 @@ import NFTLISER_ABI from '../abis/NFTliser.json'
 // Components
 import Navigation from './Navigation';
 import Tabs from './Tabs';
-import Data from './Data';
 import Homepage from './Homepage';
 import MintPage from './MintPage1';
 import MintPage2 from './MintPage2';
 import Loading from './Loading';
 
-import { loadProvider, loadNetwork, loadAccount } from '../store/interactions';
+import { loadProvider, loadNetwork, loadAccount, loadOwner } from '../store/interactions';
 import { loadINFT, loadNFTliser  } from '../store/interactions';
-import { loadInftBalance,loadInftCost, loadNFTliserBalance, loadNFTliserCost, updateInftSupply, updateNFTliserSupply} from '../store/interactions';
+import { loadInftBalance,loadInftCost, loadNFTliserBalance, loadNFTliserCost, updateInftSupply, updateNFTliserSupply,loadInftDeposits,loadNFTliserDeposits} from '../store/interactions';
 
 
 function App() {
@@ -39,29 +37,35 @@ function App() {
       window.location.reload()
     })
 
-    // Fetch account
-    let account = await loadAccount(dispatch)
-
     // Fetch current accounts
     window.ethereum.on('accountsChanged', async()=>{
       await loadAccount(dispatch)
     })
+
+    let account = await loadAccount(dispatch)
 
     // Initiate contracts
     const inft = await loadINFT(provider, chainId, dispatch)
     const nftliser = await loadNFTliser(provider, chainId, dispatch)
 
     // Fetch Balance
-    const inftBalance = await loadInftBalance(inft, account, dispatch)
-    const nftliserBalance = await loadNFTliserBalance (nftliser, account, dispatch)
+    await loadInftBalance(inft, await loadAccount(dispatch), dispatch)
+    await loadNFTliserBalance (nftliser, await loadAccount(dispatch), dispatch)
                       
     // Fetch Cost
-    const inftCost = await loadInftCost(inft, dispatch)
-    const nftliserCost = await loadNFTliserCost(nftliser, dispatch)
+    await loadInftCost(inft, dispatch)
+    await loadNFTliserCost(nftliser, dispatch)
 
-    // Fetch Count
-    const inftSupply = await updateInftSupply(inft,dispatch)
-    const nftliserSupply = await updateNFTliserSupply(nftliser,dispatch)
+    //Fetch owner account
+    await loadOwner(inft, dispatch)
+
+    // Fetch Supply
+    await updateInftSupply(inft,dispatch)
+    await updateNFTliserSupply(nftliser,dispatch)
+
+    // Fetch Deposits
+    await loadInftDeposits(inft, provider, dispatch)
+    await loadNFTliserDeposits(nftliser, provider, dispatch)
 
   }
 

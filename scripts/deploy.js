@@ -9,13 +9,13 @@ const hre = require("hardhat");
 async function main() {
   const NAME1 = 'Artificial NFT'
   const SYMBOL1 = 'AiNFT'
-  const COST1 = ethers.utils.parseUnits('5', 'ether')
+  const COST1 = ethers.utils.parseUnits('0.02', 'ether')
   
   // const IPFS_METADATA_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
   const NAME2 = 'NFTliser'
   const SYMBOL2 = 'NFTlzr'
-  const COST2 = ethers.utils.parseUnits('1', 'ether')
+  const COST2 = ethers.utils.parseUnits('0.01', 'ether')
 
   // Deploy AiNFT
   const iNFT = await hre.ethers.getContractFactory('iNFT')
@@ -23,6 +23,8 @@ async function main() {
 
   await inft.deployed()
   console.log(`iNFT deployed to: ${inft.address}\n`)
+  //await inft.initialize()
+  console.log(`iNFT owner is: ${await inft.owner()}\n`)
 
   // Deploy NFTliser
   const NFTliser = await hre.ethers.getContractFactory('NFTliser721')
@@ -30,6 +32,8 @@ async function main() {
 
   await nftliser.deployed()
   console.log(`NFTliser deployed to: ${nftliser.address}\n`)
+  //await nftliser.initialize()
+  console.log(`NFTliser owner is: ${await nftliser.owner()}\n`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere

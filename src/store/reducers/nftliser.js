@@ -4,7 +4,8 @@ export const nftliser = createSlice ({
     name:'nftliser',
     initialState: {
         contract:null,
-        balance:0,
+        balanceOf:0,
+        deposits:0,
         cost:0,
         supply:0,
         minting:{
@@ -18,7 +19,10 @@ export const nftliser = createSlice ({
             state.contract = action.payload
         },
         nftliserBalanceLoaded:(state, action)=>{
-            state.balance = action.payload
+            state.balanceOf = action.payload
+        },
+        nftliserDepositsLoaded:(state, action)=>{
+            state.deposits = action.payload
         },
         nftliserCostLoaded:(state, action)=>{
             state.cost = action.payload
@@ -44,6 +48,6 @@ export const nftliser = createSlice ({
     }
 })
 
-export const { setNftliserContract, nftliserBalanceLoaded, nftliserCostLoaded, nftliserSupplyUpdated, mint2Request, mint2Success, mint2Fail } = nftliser.actions;
+export const { setNftliserContract, nftliserBalanceLoaded, nftliserDepositsLoaded, nftliserCostLoaded, nftliserSupplyUpdated, mint2Request, mint2Success, mint2Fail } = nftliser.actions;
 
 export default nftliser.reducer;

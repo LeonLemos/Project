@@ -8,11 +8,20 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "assert": "^2.0.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.2.0",
     "buffer": "^6.0.3",
+    "crypto": "npm:crypto-browserify",
+    "crypto-browserify": "^3.12.0",
+    "dotenv": "^16.3.1",
+    "https-browserify": "^1.0.0",
     "nft.storage": "^7.1.1",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-blockies": "^1.4.1",
     "react-bootstrap": "^2.5.0",
     "react-countdown": "^2.3.2",
@@ -21,15 +30,21 @@
     "react-redux": "^8.1.3",
     "react-router-bootstrap": "^0.26.2",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "rewire": "^6.0.0",
+    "stream": "npm:stream-browserify",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0",
     "web-vitals": "^2.1.4",
+    "web3": "^1.6.1",
     "web3.storage": "^4.5.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +66,7 @@
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "dotenv-webpack": "^8.0.1",
     "hardhat": "^2.17"
   }
 }

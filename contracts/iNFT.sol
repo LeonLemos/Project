@@ -9,7 +9,7 @@ contract iNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     using Strings for uint256;
     uint256 public cost;
-    address public owner;
+    address public owner = msg.sender;
     // uint256 public maxSupply;
     // uint256 public allowMintingOn;
     // string public tokenURI;
@@ -59,6 +59,9 @@ contract iNFT is ERC721URIStorage {
 
         emit Withdraw(balance, msg.sender);
     }
+
+    receive() external payable{} //Allow contract to receive ether
+
 
     function setCost(uint256 _newCost) public onlyOwner {
         cost = _newCost;

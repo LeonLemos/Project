@@ -7,12 +7,15 @@ import './Counters.sol';
 
 contract NFTliser721 is ERC721URIStorage {
 
-    address public owner;
+    address public owner=msg.sender;
     uint256 public cost;
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
     mapping (uint256 => string) private _tokenURIs;
 
+    event Withdraw(uint256 amount, address owner);
+
+    
 
     constructor( string memory _name, string memory _symbol, uint256 _cost) 
     ERC721(_name, _symbol){
@@ -31,6 +34,8 @@ contract NFTliser721 is ERC721URIStorage {
         require(msg.sender == owner, "Not owner");
         _;
     }
+
+    receive() external payable{} //Allow contract to receive ether
 
     function setCost(uint256 _cost) public onlyOwner {
         cost = _cost;
@@ -68,7 +73,15 @@ contract NFTliser721 is ERC721URIStorage {
     */
 
     function withdraw() public onlyOwner {
-        payable(msg.sender).transfer(address(this).balance);
+        //payable(msg.sender).transfer(address(this).balance);
+
+        uint256 balance = address(this).balance;
+
+        (bool sucess,) = payable(msg.sender).call{value:balance}("");
+        require(sucess);
+
+        emit Withdraw(balance, msg.sender);
+        
     }
     
     // The following functions are overrides required by Solidity.

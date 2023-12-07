@@ -1,9 +1,8 @@
 import {ethers} from 'ethers'
 import { setProvider, setNetwork, setAccount } from './reducers/provider'
-import { Web3Storage, File } from "web3.storage";
 
-import  { setInftContract, inftBalanceLoaded, inftCostLoaded, mintRequest, mintSuccess, mintFail, inftSupplyUpdated } from './reducers/inft';
-import  { setNftliserContract, nftliserBalanceLoaded, nftliserCostLoaded, nftliserSupplyUpdated, mint2Request, mint2Success, mint2Fail } from './reducers/nftliser';
+import  { setInftContract, inftBalanceLoaded, inftCostLoaded, mintRequest, mintSuccess, mintFail, inftSupplyUpdated, setOwner, inftDepositsLoaded } from './reducers/inft';
+import  { setNftliserContract, nftliserBalanceLoaded, nftliserCostLoaded, nftliserSupplyUpdated, mint2Request, mint2Success, mint2Fail, nftliserDepositsLoaded } from './reducers/nftliser';
 
 // Config: Import your network config here
 import config from '../config.json';
@@ -69,6 +68,26 @@ export const loadNFTliserBalance = async (nftliser, account, dispatch) =>{
 }
 
 //-----------------------------------------------------------------------------------------------------------------
+//LOAD DEPOSITS
+
+export const loadInftDeposits = async (inft, provider, dispatch) =>{
+    //const inftDeposits = await ethers.provider.getBalance(inft.address)
+    //const inftDeposits = await web3.eth.getBalance(inft.address)
+    const inftDeposits = await provider.getBalance(inft.address)
+
+    dispatch(inftDepositsLoaded(ethers.utils.formatUnits(inftDeposits, "ether")))
+    return inftDeposits
+}
+
+export const loadNFTliserDeposits = async (nftliser, provider, dispatch) =>{
+    const nftliserDeposits = await provider.getBalance(nftliser.address)
+    
+    dispatch(nftliserDepositsLoaded(ethers.utils.formatUnits(nftliserDeposits, "ether")))
+    //dispatch(nftliserDepositsLoaded(nftliserDeposits.toString()))
+    return nftliserDeposits
+}
+
+//-----------------------------------------------------------------------------------------------------------------
 //LOAD COST
 export const loadInftCost = async (inft, dispatch) =>{
     const inftCost = await inft.cost()
@@ -82,6 +101,16 @@ export const loadNFTliserCost = async (nftliser, dispatch) =>{
 
     dispatch(nftliserCostLoaded(ethers.utils.formatUnits(nftliserCost, 'ether')))
     return nftliserCost
+}
+
+//----------------------------------------------------------------------------------------------------------------
+//Owner
+
+export const loadOwner = async (inft, dispatch) =>{
+    const owner = await inft.owner()
+
+    dispatch(setOwner(owner))
+    return owner
 }
 
 //-------LOAD SUPPLY COUNTS
@@ -110,7 +139,7 @@ export const mint = async (provider, inft, tokenURI, dispatch) =>{
 
     let transaction
     const signer = await provider.getSigner()
-    transaction = await inft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("5", "ether")  })
+    transaction = await inft.connect(signer).mint(tokenURI, { value: ethers.utils.parseUnits("0.02", "ether")  })
 
     await transaction.wait()
     dispatch(mintSuccess(transaction.hash))
@@ -145,3 +174,24 @@ export const mint2 = async (provider,/* data, */ nftliser, finalCid, dispatch) =
         dispatch(mint2Fail())
     }
 }
+
+//----------------------------------------------------------------------------------------------------------------
+//WITHDRAW
+export const withdraw = async ( provider, nftliser, inft) =>{
+
+    //dispatch(withdrawRequest())
+
+    const signer = await provider.getSigner()
+        
+    let transaction1 = await  nftliser.connect(signer).withdraw()
+    await transaction1.wait()
+
+    let transaction2 = await inft.connect(signer).withdraw()
+    await transaction2.wait()
+        
+}
+
+
+
+
+

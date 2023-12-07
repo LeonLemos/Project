@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { NFTStorage, File } from 'nft.storage'
@@ -11,15 +12,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { mint } from '../store/interactions';
 import Alert from './Alert';
 
-// ABIs: Import your contract ABIs here
-import iNFT_ABI from '../abis/iNFT.json'
-
-// Config: Import your network config here
-import config from '../config.json';
-
 // Components
-import Loading from './Loading';
 import Spinner from 'react-bootstrap/Spinner';
+
+require('dotenv').config()
 
 
 const MintPage = () => {
@@ -36,8 +32,6 @@ const MintPage = () => {
   const provider = useSelector(state=>state.provider.connection)
 
   const inft = useSelector(state=>state.inft.contract)
-
-  const count = useSelector( state=> state.inft.mintCount)
 
   const dispatch = useDispatch()
   
@@ -74,7 +68,7 @@ const MintPage = () => {
       url: URL,
       method: 'POST',
       headers: {
-        Authorization: `Bearer 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`, //Import from .env file
+        Authorization: `Bearer ${process.env.REACT_APP_HUGGING_FACE_API_KEY}` , //Import from .env file
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -98,7 +92,7 @@ const MintPage = () => {
     setMessage('Uploading image...')
 
     //Instantiate to NFT.Storage
-    const nftstorage = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA1NDI4MTE2YjJlZTFDRGY4OWQwZDM2NjY0YjFmRGYzQmNkYkQ5YkMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5NzA0ODUzNjM0OSwibmFtZSI6IlN0b3JlIEFpTmZ0cyJ9.1Y9W_14UCXOur1_Y4yZqzBkVxQsfen6a_JLhTO14a8M" })
+    const nftstorage = new NFTStorage({ token: process.env.REACT_APP_NFT_STORAGE_API_KEY })
     
     //Send request to store image
     const { ipnft } = await nftstorage.store({
@@ -136,9 +130,16 @@ const MintPage = () => {
                     <Spinner animation='border'/>
                     <p>{message}</p>
                   </div>
-                ):(
-                  <></>
-                )}
+                ): !isWaiting && !image ? (
+                  
+                  <div className=" text-center" style={{color: 'white' }} > 
+                  <p>Create your next digital masterpieces with the help of AI. </p>
+                  <p>Simply provide a prompt, and our cutting-edge AI algorithms will spring into action, transforming your ideas into captivating visual wonders!</p>
+                  <p>Have Fun! </p> 
+                  
+                  </div>
+                  
+                ):("")}
             </div>  
           </div>
               
