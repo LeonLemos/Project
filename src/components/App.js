@@ -66,7 +66,7 @@ function App() {
 
   useEffect(() => {
     loadBlockchainData()
-      }, []);
+    }, []);
 
   return(
     <Container >

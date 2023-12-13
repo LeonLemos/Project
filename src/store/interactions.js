@@ -1,7 +1,7 @@
 import {ethers} from 'ethers'
 import { setProvider, setNetwork, setAccount } from './reducers/provider'
 
-import  { setInftContract, inftBalanceLoaded, inftCostLoaded, mintRequest, mintSuccess, mintFail, inftSupplyUpdated, setOwner, inftDepositsLoaded } from './reducers/inft';
+import  { setInftContract, inftBalanceLoaded, inftCostLoaded, mintRequest, mintSuccess, mintFail, inftSupplyUpdated, setOwner, inftDepositsLoaded, withdrawRequest, withdrawSuccess, withdrawFail, } from './reducers/inft';
 import  { setNftliserContract, nftliserBalanceLoaded, nftliserCostLoaded, nftliserSupplyUpdated, mint2Request, mint2Success, mint2Fail, nftliserDepositsLoaded } from './reducers/nftliser';
 
 // Config: Import your network config here
@@ -177,18 +177,26 @@ export const mint2 = async (provider,/* data, */ nftliser, finalCid, dispatch) =
 
 //----------------------------------------------------------------------------------------------------------------
 //WITHDRAW
-export const withdraw = async ( provider, nftliser, inft) =>{
+export const withdraw = async ( provider, nftliser, inft, dispatch) =>{
 
-    //dispatch(withdrawRequest())
+    try{
+
+    dispatch(withdrawRequest())
 
     const signer = await provider.getSigner()
         
-    let transaction1 = await  nftliser.connect(signer).withdraw()
+    let transaction1 = await nftliser.connect(signer).withdraw()
     await transaction1.wait()
 
     let transaction2 = await inft.connect(signer).withdraw()
     await transaction2.wait()
-        
+
+    dispatch(withdrawSuccess())
+
+    }catch(error){
+        dispatch(withdrawFail())
+
+    }
 }
 
 

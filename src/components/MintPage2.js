@@ -7,6 +7,9 @@ import Alert from './Alert';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+// Components
+import Spinner from 'react-bootstrap/Spinner';
+
 //import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 //dotenv.config()
 // import 'dotenv/config' ;
@@ -40,11 +43,16 @@ const MintPage2 = () => {
   const [finalCid, setFinalCid] = useState(null);
   const [isWaiting, setIsWaiting]= useState(true)
   const [isMintable, setIsMintable] = useState(false)
+  const [ShowAlert, setShowAlert] = useState(0)
   
   const [flip, setFlip] = useState(false);
 
   const provider = useSelector(state=>state.provider.connection)
   const nftliser = useSelector(state=>state.nftliser.contract)
+
+  const isMinting = useSelector(state => state.nftliser.minting.isMinting)
+  const isSuccess = useSelector(state => state.nftliser.minting.isSuccess)
+  const transactionHash = useSelector(state => state.nftliser.minting.transactionHash)
 
   const dispatch = useDispatch()
 
@@ -102,6 +110,8 @@ const MintPage2 = () => {
     
     console.log(nftliser)
     await mint2 (provider, nftliser, finalCid, dispatch)
+
+    setShowAlert(true)
   }
 
   const handleChange = (e) => {
@@ -110,6 +120,7 @@ const MintPage2 = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
 
     if(selectedImage === null){
       window.alert("Please provide a File")
@@ -172,6 +183,7 @@ const MintPage2 = () => {
                 makeFileObjects();
                 setIsWaiting(false);
                 setIsMintable(false)
+                setShowAlert(false)
               }}
             >
               Submit
@@ -209,7 +221,10 @@ const MintPage2 = () => {
                       src={URL.createObjectURL(selectedImage)}
                     />
                     
-                    { !isMintable? ( <p className='title my-3'> Preparing File to Mint...  </p> ):(
+                    { !isMintable? (<div>
+                    <p className='title my-3'> ...Preparing File to Mint... </p>
+                    <p> <Spinner animation='border'/> </p> 
+                    </div> ):(
                       <>
                       <br />
 
@@ -239,6 +254,33 @@ const MintPage2 = () => {
         )}
         </div>
       </div>
+
+      <></>
+          {isMinting ? (
+          <Alert
+          message={"Mint Pending..."}
+          transactionHash={null}
+          variant={'info'}
+          setShowAlert={setShowAlert}
+          />
+
+        ): isSuccess && ShowAlert ? (
+          <Alert
+          message={"Mint Successful..."}
+          transactionHash={transactionHash}
+          variant={'success'}
+          setShowAlert={setShowAlert}
+          />
+
+        ): !isSuccess && ShowAlert ? (
+          <Alert
+          message={"Mint Failed..."}
+          transactionHash={null}
+          variant={'danger'}
+          setShowAlert={setShowAlert}
+          />
+        
+        ):(<></>)}
     </div>
   )
 }

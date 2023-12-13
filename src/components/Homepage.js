@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap'
-import { Link, Routes, Route, BrowserRouter} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
 
 import preview from '../preview.jpg';
 import preview2 from '../preview2.jpg';
+import Alert from './Alert';
 
-import { loadProvider, loadNetwork, loadAccount,  } from '../store/interactions';
-import { loadINFT, loadNFTliser } from '../store/interactions';
-import {loadInftBalance,loadInftCost, withdraw, loadOwner} from '../store/interactions';
+import { withdraw } from '../store/interactions';
 
 const Homepage = () => {
   const provider = useSelector(state=>state.provider.connection)
@@ -29,20 +28,27 @@ const Homepage = () => {
   const nftliserSupply = useSelector(state=>state.nftliser.supply)
 
   const owner = useSelector(state=>state.inft.owner)
+  const isWithdrawing = useSelector(state => state.inft.withdrawing.isWithdrawing)
+  const isSuccess = useSelector(state => state.inft.withdrawing.isSuccess)
+  const transactionHash = useSelector(state => state.inft.withdrawing.transactionHash)
+
+  const dispatch = useDispatch()
+
+  const [ShowAlert, setShowAlert] = useState(0)
 
   const withdrawHandler = async(e) => {
     e.preventDefault()
+    setShowAlert(false)
 
-    withdraw(provider, nftliser, inft)
+    withdraw(provider, nftliser, inft, dispatch)
 
     console.log("withdrawHandler...")
+    setShowAlert(true)
   }
-    
   return(
 
     <div className='my-4 text-center'>
       <h1 className='my-4 text-center'>Intelligent NFTs </h1>
-      
       <p> Which type of NFT would you like to create? </p>
       <p >
         { account == owner ? (
@@ -50,11 +56,10 @@ const Homepage = () => {
           ) : (
             " "
           )}
-        </p>
+      </p>
       <p> <strong>Total number of NFTs minted :</strong> {inftSupply + nftliserSupply} </p>
       
       <>
-      
         <Row>
           {/* 1st Row Column leftside */} 
 
@@ -119,7 +124,33 @@ const Homepage = () => {
         </Row>
         
       </>
+
+      {isWithdrawing ? (
+        <Alert
+        message={"Mint Pending..."}
+        transactionHash={null}
+        variant={'info'}
+        setShowAlert={setShowAlert}
+        />
+
+      ): isSuccess && ShowAlert ?(
+        <Alert
+        message={"Withdraw Successful..."}
+        transactionHash={transactionHash}
+        variant={'success'}
+        setShowAlert={setShowAlert}
+        />
+
+      ): !isSuccess && ShowAlert ? (
+        <Alert
+        message={"Withdraw Failed..."}
+        transactionHash={null}
+        variant={'danger'}
+        setShowAlert={setShowAlert}
+        />
       
+      ):(<></>)}
+
     </div>  
 
   )

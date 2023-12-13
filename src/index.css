@@ -237,6 +237,7 @@ form input[type="submit"]:hover {
   font-weight: 700;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 10px ;
 }
 
 .containerMain{

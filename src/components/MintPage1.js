@@ -17,11 +17,16 @@ const MintPage = () => {
 
   const [isWaiting, setIsWaiting] = useState(false)
   const [message, setMessage] = useState("")
+  const [ShowAlert, setShowAlert] = useState(0)
 
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [image, setImage] = useState(null)
   const [url, setURL] = useState(null)
+
+  const isMinting = useSelector(state => state.inft.minting.isMinting)
+  const isSuccess = useSelector(state => state.inft.minting.isSuccess)
+  const transactionHash = useSelector(state => state.inft.minting.transactionHash)
 
   // Initiate provider
   const provider = useSelector(state=>state.provider.connection)
@@ -32,14 +37,14 @@ const MintPage = () => {
   
   const submitHandler = async (e) =>{
     e.preventDefault()
+    setIsWaiting(true)
+    setShowAlert(false)
 
     if (name === "" || description === "") {
       window.alert("Please provide a name and description")
       return
     }
 
-    setIsWaiting(true)
-    
     //call AI API to generate a image based on description
     const imageData = await createImage() 
 
@@ -49,8 +54,9 @@ const MintPage = () => {
     //Mint nft
     await mintImage(url)
 
-    setIsWaiting(false)
     setMessage("")
+    setIsWaiting(false)
+    setShowAlert(true)
 
   }
     
@@ -156,6 +162,33 @@ const MintPage = () => {
                 </p>
               )}
             </div>
+
+            <></>
+            {isMinting ? (
+            <Alert
+            message={"Mint Pending..."}
+            transactionHash={null}
+            variant={'info'}
+            setShowAlert={setShowAlert}
+            />
+
+          ): isSuccess && ShowAlert ?(
+            <Alert
+            message={"Mint Successful..."}
+            transactionHash={transactionHash}
+            variant={'success'}
+            setShowAlert={setShowAlert}
+            />
+
+          ): !isSuccess && ShowAlert ? (
+            <Alert
+            message={"Mint Failed..."}
+            transactionHash={null}
+            variant={'danger'}
+            setShowAlert={setShowAlert}
+            />
+          
+          ):(<></>)}
         
       </div>
       

@@ -13,7 +13,13 @@ export const inft = createSlice ({
             isMinting:false,
             isSuccess:false,
             transactionHash: null
-        }
+        },
+        withdrawing:{
+            isWithdrawing:false,
+            isSuccess:false,
+            transactionHash: null
+        },
+
     },
     reducers: {
         setInftContract:(state,action)=>{
@@ -48,11 +54,26 @@ export const inft = createSlice ({
             state.minting.isMinting = false
             state.minting.isSuccess = false
             state.minting.transactionHash = null
+        },
+        withdrawRequest:(state, action)=>{
+            state.withdrawing.isWithdrawing = true
+            state.withdrawing.isSuccess = false
+            state.withdrawing.transactionHash = null
+        },
+        withdrawSuccess:(state, action)=>{
+            state.withdrawing.isWithdrawing = false
+            state.withdrawing.isSuccess = true
+            state.withdrawing.transactionHash = action.payload
+        },
+        withdrawFail:(state, action)=>{
+            state.withdrawing.isWithdrawing = false
+            state.withdrawing.isSuccess = false
+            state.withdrawing.transactionHash = null
         }
         
     }
 })
 
-export const { setInftContract, setOwner, inftBalanceLoaded, inftCostLoaded, inftSupplyUpdated, mintRequest, mintSuccess, mintFail, inftDepositsLoaded } = inft.actions;
+export const { setInftContract, setOwner, inftBalanceLoaded, inftCostLoaded, inftSupplyUpdated, mintRequest, mintSuccess, mintFail,withdrawRequest, withdrawSuccess, withdrawFail, inftDepositsLoaded } = inft.actions;
 
 export default inft.reducer;
