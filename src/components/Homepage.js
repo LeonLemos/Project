@@ -65,13 +65,13 @@ const Homepage = () => {
 
           <Col>
 
-          <p>
+          <div>
           { account == owner ? (
             <p><strong>Deposits:</strong> {inftDeposits} ETH </p>
           ) : (
             " "
           )}    
-          </p> 
+          </div> 
 
           <h3 >AiNFT</h3>  
           <p>
@@ -85,14 +85,14 @@ const Homepage = () => {
 
           <Col>
 
-          <p>
+          <div>
           
           { account == owner ? (
             <p><strong>Deposits:</strong> {nftliserDeposits} ETH </p>
           ) : (
             " "
           )}    
-          </p> 
+          </div> 
 
           <h3 >NFTliser</h3>  
           <p>

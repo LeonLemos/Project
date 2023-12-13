@@ -281,6 +281,15 @@ form{
   /* background-color:red; */
 }
 
+.NavLogo{
+
+  margin-bottom: -31px;
+  margin-left: -11px;
+  margin-top: -18px;
+  margin-right: -14px 
+
+}
+
 .title{
   display: block;
   text-align: center;

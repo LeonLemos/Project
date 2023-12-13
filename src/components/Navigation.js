@@ -1,4 +1,5 @@
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from 'react-router-dom'
 import './Navigation.css';
 import { useSelector, useDispatch } from 'react-redux';
 import Blockies from 'react-blockies';
@@ -39,13 +40,15 @@ const Navigation = () => {
 
   return (
     <Navbar className='my-3' >
-      <img
+      <Link to="/">
+      <img className="NavLogo"
         alt="logo"
         src={logo}
-        width="40"
-        height="40"
-        className="d-inline-block align-top mx-3"
+        width="110"
+        height="110"
       />
+      </Link>
+      
       <Navbar.Brand style={{color: 'white',  }} 
       href="/"><strong>iNFT</strong></Navbar.Brand>
       <Navbar.Toggle aria-controls='nav' />

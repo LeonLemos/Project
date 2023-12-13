@@ -135,8 +135,8 @@ const MintPage2 = () => {
   return (
     <div className='create-container'>
       <h3 className='my-4 p-4 text-center'>NFTliser</h3>
-      <p className="text-center">Upload the file you want to NFTlise !</p>
-        <div className="containerMain">
+      <div className="text-center">Upload the file you want to NFTlise !</div>
+      <div className="containerMain">
 
 
         <div className="left">
@@ -195,11 +195,12 @@ const MintPage2 = () => {
         <div className="right">
         {isWaiting ? (
           <div className=" text-center">
-          <p> We invite you to use our state-of-the-art <strong> NFTliser </strong>!</p>
-          <p> Simply upload any Image/Media file
-           and watch the magic happen as it turns into a mintable NFT!</p>
-          <p>Don't forget to name and describe your masterpiece. </p>
-          <p>Have Fun! </p>
+
+            <p> We invite you to use our state-of-the-art <strong> NFTliser </strong>!</p>
+            <p> Simply upload any Image/Media file
+            and watch the magic happen as it turns into a mintable NFT!</p>
+            <p>Don't forget to name and describe your masterpiece. </p>
+            <p>Have Fun! </p>
 
           </div>
           
@@ -221,9 +222,10 @@ const MintPage2 = () => {
                       src={URL.createObjectURL(selectedImage)}
                     />
                     
-                    { !isMintable? (<div>
-                    <p className='title my-3'> ...Preparing File to Mint... </p>
-                    <p> <Spinner animation='border'/> </p> 
+                    { !isMintable? (
+                    <div>
+                      <div className='title my-3'> ...Preparing File to Mint... </div>
+                      <div> <Spinner animation='border'/> </div> 
                     </div> ):(
                       <>
                       <br />
