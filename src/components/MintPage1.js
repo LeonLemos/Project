@@ -1,10 +1,6 @@
 
-import { useEffect, useState } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { useState } from 'react'
 import { NFTStorage, File } from 'nft.storage'
-import { Routes, Route, BrowserRouter} from 'react-router-dom'
-import Countdown from 'react-countdown';
-import { ethers } from 'ethers'
 import { Buffer } from 'buffer';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +12,6 @@ import Alert from './Alert';
 import Spinner from 'react-bootstrap/Spinner';
 
 require('dotenv').config()
-
 
 const MintPage = () => {
 
@@ -101,6 +96,8 @@ const MintPage = () => {
       description: description,
     })
 
+    console.log({ ipnft })
+
     // Save the URL
     const url = `https://ipfs.io/ipfs/${ipnft}/metadata.json`
     setURL(url)
@@ -118,7 +115,7 @@ const MintPage = () => {
   return(
       <div className='MintPage' >
         <h3 className='my-4 p-4 text-center' >AiNFT</h3>
-        <p className='my-4 text-center'>Describe What You would like to create</p>
+        <p className='my-4 text-center'>Describe What You would like to create...</p>
 
           {/* 1st Row Column leftside */} 
           <div className='form'>
@@ -134,7 +131,7 @@ const MintPage = () => {
                   
                   <div className=" text-center" style={{color: 'white' }} > 
                   <p>Create your next digital masterpieces with the help of AI. </p>
-                  <p>Simply provide a prompt, and our cutting-edge AI algorithms will spring into action, transforming your ideas into captivating visual wonders!</p>
+                  <p>Simply provide a description, and our cutting-edge AI algorithms will spring into action, transforming your ideas into captivating visual wonders!</p>
                   <p>Have Fun! </p> 
                   
                   </div>

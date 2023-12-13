@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Web3Storage } from "web3.storage";
+import { NFTStorage, File } from 'nft.storage'
+
 import { mint2 } from '../store/interactions';
 import Alert from './Alert';
 
@@ -9,28 +11,27 @@ import { useDispatch, useSelector } from 'react-redux';
 //dotenv.config()
 // import 'dotenv/config' ;
 
-require('dotenv').config()
-
-
-//web3storage get token
+require("dotenv").config({path:"/Users/tertulianosilva/code/iNFT_Project/.env"})
  
 function getAccessToken() {
   // If you're just testing, you can paste in a token
   // and uncomment the following line:
-   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM";
 
+  return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM"
+  //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA1NDI4MTE2YjJlZTFDRGY4OWQwZDM2NjY0YjFmRGYzQmNkYkQ5YkMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMTk3NjUxOTA4OSwibmFtZSI6IlN0b3JlIE5GVGxpc2VyIn0.CzX2NSsS39NQ4FVZdV8SaG13LLH71hAv6kQV0e1JO_M"
   // In a real app, it's better to read an access token from an
   // environement variable or other configuration that's kept outside of
   // your code base. For this to work, you need to set the
   // WEB3STORAGE_TOKEN environment variable before you run your code.
-  //return process.env.WEB3STORAGE_TOKEN
+  //console.log(process.env.REACT_APP_WEB3STORAGE_API_KEY);
+  //return process.env.REACT_APP_WEB3STORAGE_API_KEY ;
 }
-
 
 function makeStorageClient() {
-  return new Web3Storage({ token: getAccessToken() })
-}
 
+  return new Web3Storage({ token: getAccessToken() })
+  //return new NFTStorage({ token: getAccessToken() });
+}
 
 const MintPage2 = () => {
 
@@ -38,6 +39,7 @@ const MintPage2 = () => {
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [finalCid, setFinalCid] = useState(null);
   const [isWaiting, setIsWaiting]= useState(true)
+  const [isMintable, setIsMintable] = useState(false)
   
   const [flip, setFlip] = useState(false);
 
@@ -53,6 +55,7 @@ const MintPage2 = () => {
     // see: https://developer.mozilla.org/en-US/docs/Web/API/Blob
     // Here we're just storing a JSON object, but you can store images,
     // audio, or whatever you want!
+
     const image = selectedImage;
     const media = selectedMedia;
     const blob = new Blob([image], { type: "image.png" });
@@ -63,6 +66,8 @@ const MintPage2 = () => {
 
     const client = makeStorageClient();
     const cid = await client.put(files);
+    //const cid = await client.storeDirectory(files)
+
     console.log("step two");
     console.log("stored files with cid:", cid); 
 
@@ -85,8 +90,11 @@ const MintPage2 = () => {
 
     const client2 = makeStorageClient();
     const cid2 = await client2.put(ipfsfiles);
+    //const cid2 = await client2.storeDirectory(ipfsfiles);
     setFinalCid("ipfs://" + cid2 + "/json");
     console.log("finalCid = ", finalCid);
+
+    setIsMintable(true)
   } 
 
   async function mint() {
@@ -118,6 +126,8 @@ const MintPage2 = () => {
       <h3 className='my-4 p-4 text-center'>NFTliser</h3>
       <p className="text-center">Upload the file you want to NFTlise !</p>
         <div className="containerMain">
+
+
         <div className="left">
           
           <form onSubmit={handleSubmit}>
@@ -161,6 +171,7 @@ const MintPage2 = () => {
                 setFlip(true);
                 makeFileObjects();
                 setIsWaiting(false);
+                setIsMintable(false)
               }}
             >
               Submit
@@ -173,16 +184,12 @@ const MintPage2 = () => {
         {isWaiting ? (
           <div className=" text-center">
           <p> We invite you to use our state-of-the-art <strong> NFTliser </strong>!</p>
-          <p> Simply upload any Image or Media file,
-          <p></p> and watch the magic happen as it turns into a mintable NFT!</p>
+          <p> Simply upload any Image/Media file
+           and watch the magic happen as it turns into a mintable NFT!</p>
           <p>Don't forget to name and describe your masterpiece. </p>
           <p>Have Fun! </p>
 
           </div>
-          
-          
-
-        
           
         ):(
           <div className="flip-card">
@@ -201,22 +208,29 @@ const MintPage2 = () => {
                       width={"180px"}
                       src={URL.createObjectURL(selectedImage)}
                     />
-                    <br />
-                    <button onClick={() => setSelectedImage(null)}>
-                      Remove
-                    </button>
-                    {/* <br/> */}
+                    
+                    { !isMintable? ( <p className='title my-3'> Preparing File to Mint...  </p> ):(
+                      <>
+                      <br />
 
+                      <button onClick={() => setSelectedImage(null)}>
+                        Remove
+                      </button>
+                      {/* <br/> */}
+
+                      <button id="BtnColor" className="mintBtn" onClick={mint}>
+                      Mint
+                      </button>
+
+                      </>
+                    )}              
                     {selectedMedia && (
                       <div className="media">
                         <p>Media File</p>
                         <p>{selectedMedia.name}</p>
                       </div>
                     )}
-
-                    <button id="BtnColor" className="mintBtn" onClick={mint}>
-                      Mint
-                    </button>
+                    
                   </div>
                 )}
               </div>

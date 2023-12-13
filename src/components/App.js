@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { Container, Row, Col } from 'react-bootstrap'
-import { Routes, Route, BrowserRouter} from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
+import { Container } from 'react-bootstrap'
+import { Routes, Route } from 'react-router-dom'
 
-// ABIs: Import your contract ABIs here
-import iNFT_ABI from '../abis/iNFT.json'
-import NFTLISER_ABI from '../abis/NFTliser.json'
 
 // Components
 import Navigation from './Navigation';
@@ -13,7 +10,6 @@ import Tabs from './Tabs';
 import Homepage from './Homepage';
 import MintPage from './MintPage1';
 import MintPage2 from './MintPage2';
-import Loading from './Loading';
 
 import { loadProvider, loadNetwork, loadAccount, loadOwner } from '../store/interactions';
 import { loadINFT, loadNFTliser  } from '../store/interactions';
@@ -42,8 +38,7 @@ function App() {
       await loadAccount(dispatch)
     })
 
-    let account = await loadAccount(dispatch)
-
+  
     // Initiate contracts
     const inft = await loadINFT(provider, chainId, dispatch)
     const nftliser = await loadNFTliser(provider, chainId, dispatch)
