@@ -127,7 +127,7 @@ const Homepage = () => {
 
       {isWithdrawing ? (
         <Alert
-        message={"Mint Pending..."}
+        message={"Withdrawing Pending..."}
         transactionHash={null}
         variant={'info'}
         setShowAlert={setShowAlert}

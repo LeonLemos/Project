@@ -14,14 +14,13 @@ import Spinner from 'react-bootstrap/Spinner';
 //dotenv.config()
 // import 'dotenv/config' ;
 
-require("dotenv").config({path:"/Users/tertulianosilva/code/iNFT_Project/.env"})
+//require("dotenv").config({path:"/Users/tertulianosilva/code/iNFT_Project/.env"})
  
 function getAccessToken() {
   // If you're just testing, you can paste in a token
   // and uncomment the following line:
 
   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY3M2E1Y0UwZDY1M0NDNjkyOGE3MjZFNmFEQTI3ZjlEMERBRTI0MDUiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc0ODExNjA2MTQsIm5hbWUiOiJORlRsaXNlciJ9.-V4LO4pD0PsBQul8aoJ5OSfXUKoCalbsyQY6tZ4BArM"
-  //return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDA1NDI4MTE2YjJlZTFDRGY4OWQwZDM2NjY0YjFmRGYzQmNkYkQ5YkMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMTk3NjUxOTA4OSwibmFtZSI6IlN0b3JlIE5GVGxpc2VyIn0.CzX2NSsS39NQ4FVZdV8SaG13LLH71hAv6kQV0e1JO_M"
   // In a real app, it's better to read an access token from an
   // environement variable or other configuration that's kept outside of
   // your code base. For this to work, you need to set the
@@ -33,7 +32,6 @@ function getAccessToken() {
 function makeStorageClient() {
 
   return new Web3Storage({ token: getAccessToken() })
-  //return new NFTStorage({ token: getAccessToken() });
 }
 
 const MintPage2 = () => {
@@ -137,7 +135,6 @@ const MintPage2 = () => {
       <h3 className='my-4 p-4 text-center'>NFTliser</h3>
       <div className="text-center">Upload the file you want to NFTlise !</div>
       <div className="containerMain">
-
 
         <div className="left">
           
