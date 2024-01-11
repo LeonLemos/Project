@@ -11,6 +11,7 @@ async function main() {
   const SYMBOL1 = 'AiNFT'
   const COST1 = ethers.utils.parseUnits('0.02', 'ether')
   
+  
   // const IPFS_METADATA_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
   const NAME2 = 'NFTliser'
@@ -19,7 +20,7 @@ async function main() {
 
   // Deploy AiNFT
   const iNFT = await hre.ethers.getContractFactory('iNFT')
-  let inft = await iNFT.deploy(NAME1, SYMBOL1, COST1 /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
+  let inft = await iNFT.deploy(NAME1, SYMBOL1, COST1)
 
   await inft.deployed()
   console.log(`iNFT deployed to: ${inft.address}\n`)
@@ -28,7 +29,7 @@ async function main() {
 
   // Deploy NFTliser
   const NFTliser = await hre.ethers.getContractFactory('NFTliser721')
-  let nftliser = await NFTliser.deploy(NAME2, SYMBOL2, COST2 /* , MAX_SUPPLY, NFT_MINT_DATE, IPFS_METADATA_URI*/)
+  let nftliser = await NFTliser.deploy(NAME2, SYMBOL2, COST2 )
 
   await nftliser.deployed()
   console.log(`NFTliser deployed to: ${nftliser.address}\n`)

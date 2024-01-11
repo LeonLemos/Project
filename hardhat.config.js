@@ -5,7 +5,7 @@ const privateKeys = process.env.PRIVATE_KEYS || ""
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  defaultNetwork: "hardhat",
+  solidity: "0.8.20",
   networks: {
     localhost: {},
     sepolia: {
@@ -13,6 +13,10 @@ module.exports = {
       accounts: privateKeys.split(",")
     }
   },
-  solidity: "0.8.20",
+  etherscan: {
+    apiKey: {
+      sepolia: process.env.ETHERSCAN_API_KEY
+    }
+  }
+  
 };
- 

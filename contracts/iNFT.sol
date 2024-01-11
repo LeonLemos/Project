@@ -25,7 +25,7 @@ contract iNFT is ERC721URIStorage {
    // event Mint(uint256 amount, address minter);
     event Withdraw(uint256 amount, address owner);
 
-    constructor( string memory _name, string memory _symbol, uint256 _cost) 
+    constructor( string memory _name, string memory _symbol, uint256 _cost)
     ERC721(_name, _symbol){
         cost = _cost;
         
